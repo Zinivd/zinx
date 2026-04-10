@@ -1,0 +1,91 @@
+/* Button */
+/* Aside Button */
+.aside-btn {
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-size: 16px;
+    padding: 8px 10px;
+    border: 2px solid transparent;
+    width: 92%;
+    font-weight: var(--fw-md);
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 85% 15%;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition);
+}
+
+/* List / Form / Modal Button */
+.list-btn,
+.form-btn {
+    background-color: var(--secondary);
+    color: var(--text-primary);
+    font-weight: var(--fw-md);
+    border: 2px solid var(--main);
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 4px 25px;
+}
+
+/* Back Button */
+.back-btn {
+    background: transparent;
+    color: var(--main);
+    font-weight: var(--fw-md);
+    border: none;
+    border-radius: none;
+    font-size: 14px;
+    padding: 4px;
+    transition: var(--transition);
+}
+
+/* Pagination */
+.pagination-btn {
+    border: 1px solid var(--main);
+    background-color: var(--secondary);
+    color: var(--main);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination-btn:hover {
+    background-color: var(--main) !important;
+    color: var(--secondary) !important;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Box Shadow / Transition */
+.list-btn,
+.form-btn {
+    transition: var(--transition);
+    box-shadow: var(--box-shadow);
+}
+
+/* Button Hover */
+.aside-btn-active,
+.aside-btn:hover {
+    background-color: var(--bg);
+    color: var(--text-primary);
+    border: 2px solid var(--main);
+}
+
+.list-btn:hover,
+.form-btn:hover {
+    background-color: var(--main);
+    color: var(--secondary);
+}
+
+.back-btn:hover {
+    color: var(--text-secondary);
+}

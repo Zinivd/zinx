@@ -1,0 +1,121 @@
+<div class="body-head mb-3">
+    <h4 class="mb-0">Employees List</h4>
+    <button class="list-btn" routerLink="/employee-add">
+        <i class="fa-solid fa-plus pe-1"></i> Add Employee
+    </button>
+</div>
+
+<div class="list-table">
+    <div class="search-input">
+        <i class="bx bx-search"></i>
+        <input type="text" class="form-control border-0" placeholder="Search ...">
+    </div>
+
+    <div class="table-wrapper mt-3">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Employee Name</th>
+                    <th>Designation</th>
+                    <th>Email ID</th>
+                    <th>Contact No</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Sheik</td>
+                    <td>Front End Developer</td>
+                    <td>sheik@gmail.com</td>
+                    <td>9876543210</td>
+                    <td>Salem</td>
+                    <td>
+                        <div class="d-flex column-gap-2">
+                            <a title="View Employee" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a title="Edit Employee" [routerLink]="['/employee-edit', 1]">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a title="Inactive">
+                                <i class="fas fa-circle-xmark text-danger"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">No Details Found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Pagination -->
+<div class="paginate-div">
+    <button class="pagination-btn">
+        <i class="las la-angle-left text-lg"></i>
+    </button>
+    <span class="paginate-text">
+        Page
+    </span>
+    <button class="pagination-btn active-btn">
+        <i class="las la-angle-right text-lg"></i>
+    </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="viewEmployeeModal" tabindex="-1" aria-labelledby="viewEmployeeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="viewEmployeeModalLabel">Employee Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Name</label>
+                        <h6 class="mb-0">Sheik</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Designation</label>
+                        <h6 class="mb-0">Front End Developer</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Email ID</label>
+                        <h6 class="mb-0">sheik@gmail.com</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Contact No</label>
+                        <h6 class="mb-0">9876543210</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Address</label>
+                        <h6 class="mb-0">Salem</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Pay Type</label>
+                        <h6 class="mb-0">Monthly</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Salary</label>
+                        <h6 class="mb-0">30000</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Aadhar Card No</label>
+                        <h6 class="mb-0">1234 5678 9012</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Profile Image</label>
+                        <img src="assets/images/Avatar.png" alt="Profile Image" height="100px"
+                            class="d-block rounded-2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+aside ul::-webkit-scrollbar {
+    display: none;
+}
+
+aside {
+    background: var(--secondary);
+}
+
+aside .main-ul {
+    margin-top: 30px;
+}
+
+aside .collapse {
+    transition: height 0.5s ease;
+}
+
+.sidebar .btn-name {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 12% 85%;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: var(--fw-sm);
+    text-align: left;
+}
+
+.sidebar ul li a {
+    color: var(--text-secondary);
+    font-weight: var(--fw-sm);
+    transition: var(--transition);
+    padding-bottom: 5px;
+}
+
+.aside-link-active,
+.sidebar .collapse li a:hover {
+    color: var(--text-primary);
+}
+
+.offcanvas {
+    background-color: var(--main) !important;
+}
+
+@media screen and (min-width:1140px) and (max-width: 1250px) {
+
+    aside .btn-name {
+        font-size: 14px !important;
+    }
+    
+    aside .btn-name i {
+        font-size: 16px !important;
+    }
+
+    aside .nav img {
+        height: 35px !important;
+    }
+}
+
+@media screen and (min-width: 1140px) {
+
+    /* Aside */
+    aside {
+        height: 100vh;
+        position: sticky;
+        top: 0px;
+        left: 0px;
+        z-index: 999 !important;
+        border-right: 1px solid #E6E4F0;
+    }
+
+    aside .main-ul {
+        height: 84vh;
+        overflow: hidden scroll;
+    }
+
+    .sidebar .btn-name {
+        font-size: 16px;
+    }
+
+    aside .btn-name i {
+        font-size: 18px !important;
+    }
+
+    .sidebar {
+        padding: 10px 0px 0px 0px;
+        border-radius: 10px;
+    }
+
+    .sidebar ul li a {
+        font-size: 14px;
+    }
+
+}
+
+@media screen and (max-width: 1140px) {
+
+    aside {
+        display: none;
+    }
+
+    .sidebar ul li a {
+        font-size: 14px;
+    }
+
+    .sidebar .btn-name {
+        font-size: 14px;
+    }
+
+    aside .btn-name i {
+        font-size: 16px !important;
+    }
+
+    #navOffcanvas {
+        width: 95%;
+    }
+
+}

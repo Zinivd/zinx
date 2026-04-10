@@ -1,0 +1,88 @@
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+}
+
+.modal {
+    pointer-events: auto;
+}
+
+.modal-dialog {
+    z-index: 1055;
+    pointer-events: auto;
+}
+
+.modal-content {
+    pointer-events: auto;
+}
+
+/* Modal Body */
+.modal-body::-webkit-scrollbar {
+    width: 10px;
+    cursor: pointer;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #fff;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: #D9D9D9;
+    border-radius: 10px;
+    border: 3px solid #f4f4f4;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--main);
+}
+
+.modal-content {
+    background-color: var(--secondary) !important;
+}
+
+.modal-header h4 {
+    color: var(--sub);
+    font-weight: var(--fw-xl);
+    font-size: 18px;
+}
+
+.modal-header h5 {
+    color: var(--text-primary);
+    font-weight: var(--fw-lg);
+    font-size: 16px;
+}
+
+.modal-card-div .modal-card {
+    background: var(--secondary);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+    border: 2px solid var(--border);
+}
+
+.modal-body h1,
+.modal-card h1 {
+    color: var(--sub);
+    font-weight: var(--fw-xl);
+    font-size: 20px;
+}
+
+.modal-body h3,
+.modal-card h3 {
+    color: var(--text-primary);
+    font-weight: var(--fw-lg);
+    font-size: 16px;
+}
+
+.modal-body h6,
+.modal-card h6 {
+    color: var(--text-secondary);
+    font-weight: var(--fw-md);
+    font-size: 14px;
+}

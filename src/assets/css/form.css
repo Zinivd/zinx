@@ -1,0 +1,199 @@
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-ms-clear {
+    display: none;
+}
+
+input[type="date"],
+input[type="month"] {
+    -webkit-appearance: auto !important;
+    appearance: auto !important;
+    background-image: initial !important;
+}
+
+form hr {
+    margin: 1rem 0;
+    color: var(--border);
+    border: 0;
+    border-top: var(--bs-border-width) solid;
+    opacity: 1;
+}
+
+.alert,
+.alert-success {
+    padding: 10px 5px !important;
+    margin-bottom: 5px !important;
+    font-size: 12px;
+}
+
+.alert ul,
+.alert-success ul {
+    margin-bottom: 0px !important;
+    padding-left: 10px !important;
+}
+
+.alert ul li,
+.alert-success ul li {
+    font-size: 12px;
+}
+
+.form-div {
+    background: var(--secondary);
+    box-shadow: var(--box-shadow);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 10px 15px;
+}
+
+.form-div h4 {
+    color: var(--sub);
+    font-size: 18px;
+    font-weight: var(--fw-lg);
+}
+
+form label,
+.modal-body label,
+.modal-footer label,
+.form-div label {
+    color: var(--label);
+    font-weight: var(--fw-md);
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+form .form-control,
+form .form-select,
+table .form-control,
+table .form-select,
+.modal .form-control,
+.modal .form-select,
+.form-div .form-control,
+.form-div .form-select {
+    background-color: var(--input-bg) !important;
+    color: var(--text-primary);
+    font-weight: var(--fw-md);
+    border: 1px solid var(--input-border);
+    font-size: 14px;
+    padding: 6px 10px !important;
+}
+
+form .form-control:focus,
+form .form-select:focus,
+form .input-double-flex:focus-within,
+form .input-repeat-double-flex:focus-within,
+table .form-control:focus,
+table .form-select:focus,
+.modal .form-control:focus,
+.modal .form-select:focus,
+.modal .input-double-flex:focus-within,
+.modal .input-repeat-double-flex:focus-within,
+.form-control:hover,
+.form-select:hover,
+.input-double-flex:hover,
+.input-repeat-double-flex:hover {
+    background-color: var(--secondary) !important;
+    outline: none;
+    box-shadow: none;
+    border: 1px solid var(--main);
+}
+
+.input-double-flex {
+    background-color: var(--input-bg);
+    display: grid;
+    grid-template-columns: 15% 85%;
+    align-items: center;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+}
+
+.input-repeat-double-flex {
+    background-color: var(--input-bg);
+    width: 100%;
+    display: grid;
+    grid-template-columns: 85% 15%;
+    align-items: center;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+}
+
+.input-triple-flex {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 15% 70% 15%;
+    align-items: center;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+}
+
+.input-double-flex input {
+    border-left: 1px solid var(--input-border) !important;
+    border-radius: 0px 5px 5px 0px !important;
+}
+
+.input-repeat-double-flex input {
+    border-right: 1px solid var(--input-border) !important;
+    border-radius: 5px 0px 0px 5px !important;
+}
+
+.input-triple-flex input {
+    border: none !important;
+    border-radius: 0px !important;
+}
+
+.input-double-flex i,
+.input-repeat-double-flex i,
+.input-triple-flex span {
+    font-size: 14px !important;
+    text-align: center;
+}
+
+.form-control::placeholder {
+    font-size: 12px;
+    font-weight: var(--fw-sm);
+    text-transform: capitalize;
+}
+
+.normal-small {
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: var(--fw-sm);
+}
+
+.error-small,
+.error-small span {
+    color: var(--red);
+    font-size: 12px;
+    font-weight: var(--fw-sm);
+}
+
+.inputbtn {
+    height: 100%;
+    background: var(--secondary);
+    color: var(--text-primary);
+    border: none;
+    font-size: 16px;
+    font-weight: var(--fw-md);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.inputbtn:hover {
+    background: var(--main);
+    color: var(--secondary);
+}
+
+.form-btn-div {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}

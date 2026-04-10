@@ -1,0 +1,31 @@
+.error-component {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.error-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+}
+
+.error-div img {
+    height: 300px !important;
+}
+
+.error-div h2 {
+    font-size: 28px;
+    font-weight: var(--fw-xl);
+    color: var(--sub);
+}
+
+.error-div h6 {
+    font-size: 16px;
+    font-weight: var(--fw-md);
+    color: var(--text-primary);
+}

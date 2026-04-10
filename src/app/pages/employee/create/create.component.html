@@ -1,0 +1,71 @@
+<div class="back-button-div mb-3">
+    <button (click)="goBack()" class="back-btn">← Back</button>
+</div>
+
+<div class="body-head mb-3">
+    <h4 class="mb-0">{{ isEditMode ? 'Edit Employee' : 'Add Employee' }}</h4>
+</div>
+
+<form (ngSubmit)="onSubmit()">
+    <div class="form-div">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="name">Name <span>*</span></label>
+                <input type="text" class="form-control" id="name" name="name" [(ngModel)]="employee.name" placeholder="Enter Name"
+                    required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="designation">Designation <span>*</span></label>
+                <input type="text" class="form-control" id="designation" name="designation" [(ngModel)]="employee.designation"
+                    placeholder="Enter Designation" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="email">Email ID <span>*</span></label>
+                <input type="email" class="form-control" id="email" name="email" [(ngModel)]="employee.email"
+                    placeholder="Enter Email" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="contact">Contact Number <span>*</span></label>
+                <input type="tel" class="form-control" id="contact" name="contact" pattern="[6-9][0-9]{9}" maxlength="10"
+                    [(ngModel)]="employee.contact" placeholder="Enter Contact Number" (input)="validateContact($event)"
+                    required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="address">Address <span>*</span></label>
+                <input type="text" class="form-control" id="address" name="address" [(ngModel)]="employee.address"
+                    placeholder="Enter Address" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="payType">Pay Type <span>*</span></label>
+                <select class="form-select" id="payType" name="payType" [(ngModel)]="employee.payType" required>
+                    <option value="" selected disabled>Select Pay Type</option>
+                    <option value="project">Project</option>
+                    <option value="monthly">Monthly</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="salary">Salary <span>*</span></label>
+                <input type="number" class="form-control" id="salary" name="salary" min="0" [(ngModel)]="employee.salary"
+                    placeholder="Enter Salary" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="aadharImg">Aadhar Card Image <span>*</span></label>
+                <input type="file" class="form-control" id="aadharImg" name="aadharImg" accept="image/*" [(ngModel)]="employee.aadharImg"
+                    required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="aadharNo">Aadhar Card No <span>*</span></label>
+                <input type="tel" class="form-control" placeholder="Enter Aadhaar Number" maxlength="14"
+                    (input)="validateAadhar($event)" name="aadharNo" [(ngModel)]="employee.aadharNo" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="profileImg">Profile Image</label>
+                <input type="file" class="form-control" id="profileImg" name="profileImg" accept="image/*"
+                    [(ngModel)]="employee.profileImg">
+            </div>
+        </div>
+    </div>
+    <div class="form-btn-div mt-4">
+        <button type="submit" class="form-btn">{{ isEditMode ? 'Update Employee' : 'Add Employee' }}</button>
+    </div>
+</form>
