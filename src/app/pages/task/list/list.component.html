@@ -1,0 +1,111 @@
+<div class="body-head mb-3">
+    <h4 class="mb-0">Tasks List</h4>
+    <button class="list-btn" routerLink="/task-add">
+        <i class="fa-solid fa-plus pe-1"></i> Add Task
+    </button>
+</div>
+
+<div class="list-table">
+    <div class="search-input">
+        <i class="bx bx-search"></i>
+        <input type="text" class="form-control border-0" placeholder="Search ..." [(ngModel)]="searchText"
+            (ngModelChange)="onSearchChange()" />
+    </div>
+
+    <div class="table-wrapper mt-3">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Task Name</th>
+                    <th>Project</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let task of paginatedTasks; let i = index">
+                    <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.project }}</td>
+                    <td>{{ task.startdate }}</td>
+                    <td>{{ task.enddate }}</td>
+                    <td>{{ task.status }}</td>
+                    <td>
+                        <div class="d-flex align-items-center column-gap-2">
+                            <a title="View Task" data-bs-toggle="modal" data-bs-target="#viewTaskModal"
+                                (click)="viewTask(task)" style="cursor: pointer;">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <a title="Edit Task" [routerLink]="['/task-edit', task.id]">
+                                <i class="fa-solid fa-edit"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="paginatedTasks.length === 0">
+                    <td colspan="7" class="text-center">No Details Found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Pagination -->
+<div class="paginate-div" *ngIf="filteredTasks.length > 0">
+    <button class="pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+        <i class="las la-angle-left text-lg"></i>
+    </button>
+    <span class="paginate-text">
+        Page {{ currentPage }} of {{ totalPages }}
+    </span>
+    <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+        <i class="las la-angle-right text-lg"></i>
+    </button>
+</div>
+
+<!-- View Task Modal -->
+<div class="modal fade" id="viewTaskModal" tabindex="-1" aria-labelledby="viewTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" *ngIf="selectedTask">
+            <div class="modal-header">
+                <h4 class="mb-0">Task Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Task Name</label>
+                        <h6 class="mb-0">{{ selectedTask.name }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Project Name</label>
+                        <h6 class="mb-0">{{ selectedTask.project }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Assign Employee</label>
+                        <h6 class="mb-0">{{ selectedTask.employees.length === 0 ? '-' : selectedTask.employees[0] }}
+                        </h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Start Date</label>
+                        <h6 class="mb-0">{{ selectedTask.startdate }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>End Date</label>
+                        <h6 class="mb-0">{{ selectedTask.enddate }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Status</label>
+                        <h6 class="mb-0">{{ selectedTask.status }}</h6>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Description</label>
+                        <h6 class="mb-0">{{ selectedTask.description }}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

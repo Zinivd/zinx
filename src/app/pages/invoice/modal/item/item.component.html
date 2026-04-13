@@ -1,0 +1,39 @@
+<div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="mb-0">Add Item</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="itemName">Item Name <span>*</span></label>
+                            <input type="text" class="form-control" id="itemName" name="itemName"
+                                placeholder="Enter Item Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="hsncode">HSN Code <span>*</span></label>
+                            <input type="text" class="form-control" id="hsncode" name="hsncode" placeholder="Enter HSN Code"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount">Amount <span>*</span></label>
+                            <input type="number" class="form-control" id="amount" name="amount" min="0"
+                                placeholder="Enter Amount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" rows="2" id="description" name="description"
+                                placeholder="Enter Description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="form-btn">Add Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

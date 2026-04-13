@@ -44,8 +44,27 @@ export class SidebarComponent implements OnInit {
 
   private setActiveMenu(url: string): void {
     this.openMenu = {
-      dashboard: url.startsWith('/admin/dashboard'),
-      users: url.startsWith('/admin/users/'),
+      dashboard: url.startsWith('/dashboard'),
     };
+  }
+
+  isEmployeeRoute(): boolean {
+    return this.router.url.startsWith('/employee-');
+  }
+
+  isProjectRoute(): boolean {
+    return this.router.url.startsWith('/project-');
+  }
+
+  isTaskRoute(): boolean {
+    return this.router.url.startsWith('/task-');
+  }
+
+  isFinanceRoute(): boolean {
+    return this.router.url.startsWith('/finance-');
+  }
+
+  isProfileRoute(): boolean {
+    return this.router.url.startsWith('/settings-profile');
   }
 }

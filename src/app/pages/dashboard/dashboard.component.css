@@ -1,0 +1,22 @@
+.book-card {
+    background-color: var(--secondary);
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    padding: 10px;
+    transition: all var(--transition);
+}
+
+/* .book-card:hover {
+    border: 2px solid var(--main);
+    box-shadow: var(--box-shadow);
+} */
+
+.book-card h6 {
+    color: var(--text-secondary);
+    font-weight: var(--fw-md);
+}
+
+.book-card h5 {
+    color: var(--text-primary);
+    font-weight: var(--fw-xl);
+}

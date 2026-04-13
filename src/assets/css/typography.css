@@ -1,6 +1,6 @@
 :root {
     --main: #F4154B;
-    --sub: #2C3E50;
+    --sub: #0A1B39;
     --bg: #F7F7FC;
     --primary: #000;
     --secondary: #fff;
@@ -14,6 +14,7 @@
     --thead-bg: #f5f5f5;
     --green: #14AE5C;
     --red: #ED1C24;
+    --blue: #1A56DB;
     --purple: #7434A8;
     --box-shadow: 0 0 .875rem 0 rgba(33, 37, 41, .05);
     --transition: 0.3s ease-in-out;

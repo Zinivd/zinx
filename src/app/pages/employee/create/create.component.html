@@ -11,13 +11,13 @@
         <div class="row">
             <div class="col-md-4 mb-3">
                 <label for="name">Name <span>*</span></label>
-                <input type="text" class="form-control" id="name" name="name" [(ngModel)]="employee.name" placeholder="Enter Name"
-                    required>
+                <input type="text" class="form-control" id="name" name="name" [(ngModel)]="employee.name"
+                    placeholder="Enter Name" required>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="designation">Designation <span>*</span></label>
-                <input type="text" class="form-control" id="designation" name="designation" [(ngModel)]="employee.designation"
-                    placeholder="Enter Designation" required>
+                <input type="text" class="form-control" id="designation" name="designation"
+                    [(ngModel)]="employee.designation" placeholder="Enter Designation" required>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="email">Email ID <span>*</span></label>
@@ -26,9 +26,12 @@
             </div>
             <div class="col-md-4 mb-3">
                 <label for="contact">Contact Number <span>*</span></label>
-                <input type="tel" class="form-control" id="contact" name="contact" pattern="[6-9][0-9]{9}" maxlength="10"
-                    [(ngModel)]="employee.contact" placeholder="Enter Contact Number" (input)="validateContact($event)"
-                    required>
+                <div class="input-double-flex">
+                    <label class="mb-0 text-center">+ 91</label>
+                    <input type="tel" class="form-control border-0" id="contact" name="contact" pattern="[6-9][0-9]{9}"
+                        maxlength="10" [(ngModel)]="employee.contact" placeholder="Enter Contact Number"
+                        (input)="validateContact($event)" required>
+                </div>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="address">Address <span>*</span></label>
@@ -45,13 +48,13 @@
             </div>
             <div class="col-md-4 mb-3">
                 <label for="salary">Salary <span>*</span></label>
-                <input type="number" class="form-control" id="salary" name="salary" min="0" [(ngModel)]="employee.salary"
-                    placeholder="Enter Salary" required>
+                <input type="number" class="form-control" id="salary" name="salary" min="0"
+                    [(ngModel)]="employee.salary" placeholder="Enter Salary" required>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="aadharImg">Aadhar Card Image <span>*</span></label>
-                <input type="file" class="form-control" id="aadharImg" name="aadharImg" accept="image/*" [(ngModel)]="employee.aadharImg"
-                    required>
+                <input type="file" class="form-control" id="aadharImg" name="aadharImg" accept="image/*"
+                    [(ngModel)]="employee.aadharImg" required>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="aadharNo">Aadhar Card No <span>*</span></label>

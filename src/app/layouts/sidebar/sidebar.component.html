@@ -9,7 +9,7 @@
         <ul class="main-ul list-unstyled ps-0">
             <!-- Dashboard -->
             <li class="mb-3">
-                <button class="aside-btn mx-auto" routerLink="/dashboard" routerLinkActive="asidebtn-active">
+                <button class="aside-btn mx-auto" routerLink="/dashboard" routerLinkActive="aside-btn-active">
                     <div class="btn-name">
                         <i class="bx bx-dashboard"></i> Dashboard
                     </div>
@@ -17,7 +17,8 @@
             </li>
             <!-- Employee -->
             <li class="mb-3">
-                <button class="aside-btn mx-auto" routerLink="/employee-list" routerLinkActive="asidebtn-active">
+                <button class="aside-btn mx-auto" routerLink="/employee-list"
+                    [class.aside-btn-active]="isEmployeeRoute()">
                     <div class="btn-name">
                         <i class="bx bx-user"></i> Employees
                     </div>
@@ -25,7 +26,8 @@
             </li>
             <!-- Projects -->
             <li class="mb-3">
-                <button class="aside-btn mx-auto" routerLink="/projects" routerLinkActive="asidebtn-active">
+                <button class="aside-btn mx-auto" routerLink="/project-list"
+                    [class.aside-btn-active]="isProjectRoute()">
                     <div class="btn-name">
                         <i class="bx bx-layers-down-right"></i> Projects
                     </div>
@@ -33,7 +35,7 @@
             </li>
             <!-- Task -->
             <li class="mb-3">
-                <button class="aside-btn mx-auto" routerLink="/tasks" routerLinkActive="asidebtn-active">
+                <button class="aside-btn mx-auto" routerLink="/task-list" [class.aside-btn-active]="isTaskRoute()">
                     <div class="btn-name">
                         <i class="bx bx-checklist"></i> Tasks
                     </div>
@@ -41,8 +43,8 @@
             </li>
             <!-- Finance -->
             <li class="mb-3">
-                <button class="aside-btn mx-auto" [class.asidebtn-active]="openMenu['finance']"
-                    (click)="toggleMenu('finance')">
+                <button class="aside-btn mx-auto" [class.aside-btn-active]="openMenu['finance']"
+                    [class.aside-btn-active]="isFinanceRoute()" (click)="toggleMenu('finance')">
                     <div class="btn-name">
                         <i class="bx bx-wallet"></i> Finance
                     </div>
@@ -56,12 +58,12 @@
                 <div class="collapse" [class.show]="openMenu['finance']">
                     <ul class="btn-toggle-nav ms-2 ps-5 pb-3">
                         <li class="mt-3">
-                            <a routerLink="/cashback" routerLinkActive="aside-link-active" class="nav-link">
-                                Cashback
+                            <a routerLink="/finance-book-list" routerLinkActive="aside-link-active" class="nav-link">
+                                Cashbook
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/invoice" routerLinkActive="aside-link-active" class="nav-link">
+                            <a routerLink="/finance-invoice-list" routerLinkActive="aside-link-active" class="nav-link">
                                 Invoice
                             </a>
                         </li>
@@ -70,7 +72,8 @@
             </li>
             <!-- Settings -->
             <li class="mb-3">
-                <button class="aside-btn mx-auto" routerLink="/settings" routerLinkActive="asidebtn-active">
+                <button class="aside-btn mx-auto" routerLink="/settings-profile"
+                    [class.aside-btn-active]="isProfileRoute()">
                     <div class="btn-name">
                         <i class="bx bx-cog"></i> Settings
                     </div>
@@ -88,3 +91,106 @@
         </ul>
     </div>
 </aside>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="navOffcanvas" aria-labelledby="navOffcanvasLabel">
+    <div class="offcanvas-header">
+        <div class="user">
+            <img src="assets/images/Avatar.png" class="rounded-circle" alt="">
+            <h6 class="px-3 py-1 m-0 rounded-1">
+                <span class="username">
+                    Admin
+                </span>
+            </h6>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <div class="flex-shrink-0 sidebar">
+            <ul class="main-ul list-unstyled ps-0">
+                <!-- Dashboard -->
+                <li class="mb-3">
+                    <button class="aside-btn mx-auto" routerLink="/dashboard" routerLinkActive="aside-btn-active">
+                        <div class="btn-name">
+                            <i class="bx bx-dashboard"></i> Dashboard
+                        </div>
+                    </button>
+                </li>
+                <!-- Employee -->
+                <li class="mb-3">
+                    <button class="aside-btn mx-auto" routerLink="/employee-list"
+                        [class.aside-btn-active]="isEmployeeRoute()">
+                        <div class="btn-name">
+                            <i class="bx bx-user"></i> Employees
+                        </div>
+                    </button>
+                </li>
+                <!-- Projects -->
+                <li class="mb-3">
+                    <button class="aside-btn mx-auto" routerLink="/project-list"
+                        [class.aside-btn-active]="isProjectRoute()">
+                        <div class="btn-name">
+                            <i class="bx bx-layers-down-right"></i> Projects
+                        </div>
+                    </button>
+                </li>
+                <!-- Task -->
+                <li class="mb-3">
+                    <button class="aside-btn mx-auto" routerLink="/task-list" [class.aside-btn-active]="isTaskRoute()">
+                        <div class="btn-name">
+                            <i class="bx bx-checklist"></i> Tasks
+                        </div>
+                    </button>
+                </li>
+                <!-- Finance -->
+                <li class="mb-3">
+                    <button class="aside-btn mx-auto" [class.aside-btn-active]="openMenu['finance']"
+                        [class.aside-btn-active]="isFinanceRoute()" (click)="toggleMenu('finance')">
+                        <div class="btn-name">
+                            <i class="bx bx-wallet"></i> Finance
+                        </div>
+                        <div class="right-icon d-flex ms-auto">
+                            <i class="fa-solid toggle-icon" [ngClass]="{
+                            'fa-angle-down': openMenu['finance'],
+                            'fa-angle-right': !openMenu['finance']
+                        }"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" [class.show]="openMenu['finance']">
+                        <ul class="btn-toggle-nav ms-2 ps-5 pb-3">
+                            <li class="mt-3">
+                                <a routerLink="/finance-book-list" routerLinkActive="aside-link-active"
+                                    class="nav-link">
+                                    Cashbook
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="/finance-invoice-list" routerLinkActive="aside-link-active"
+                                    class="nav-link">
+                                    Invoice
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <!-- Settings -->
+                <li class="mb-3">
+                    <button class="aside-btn mx-auto" routerLink="/settings-profile"
+                        [class.aside-btn-active]="isProfileRoute()">
+                        <div class="btn-name">
+                            <i class="bx bx-cog"></i> Settings
+                        </div>
+                    </button>
+                </li>
+
+                <!-- Logout -->
+                <li class="mb-3">
+                    <button class="aside-btn mx-auto">
+                        <div class="btn-name">
+                            <i class="bx bxs-arrow-out-right-square-half"></i> Logout
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,134 @@
+<div class="back-button-div mb-3">
+    <button (click)="goBack()" class="back-btn">← Back</button>
+</div>
+
+<div class="body-head mb-3">
+    <h4 class="mb-0">Cash List</h4>
+    <div class="d-flex align-items-center column-gap-2">
+        <button class="list-btn" data-bs-toggle="modal" data-bs-target="#addEntryModal" (click)="openModal('Cash In')">
+            <i class="fa-solid fa-plus pe-1"></i> Add Cash In
+        </button>
+        <button class="list-btn" data-bs-toggle="modal" data-bs-target="#addEntryModal" (click)="openModal('Cash Out')">
+            <i class="fa-solid fa-plus pe-1"></i> Add Cash Out
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <div class="book-card">
+            <h6 class="mb-3">Balance</h6>
+            <h5 class="mb-0">₹ {{ balance }}</h5>
+        </div>
+    </div>
+</div>
+
+<div class="list-table">
+    <div class="search-input">
+        <i class="bx bx-search"></i>
+        <input type="text" class="form-control border-0" placeholder="Search ..." [(ngModel)]="searchQuery"
+            (ngModelChange)="onSearchChange()" />
+    </div>
+
+    <div class="table-wrapper mt-3">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Date / Time</th>
+                    <th>Vendor</th>
+                    <th>Payment Mode</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let entry of paginatedEntries; let i = index">
+                    <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+                    <td>{{ entry.date }} / {{ entry.time }}</td>
+                    <td>{{ entry.vendor }}</td>
+                    <td>{{ entry.paymentMode }}</td>
+                    <td>{{ entry.category }}</td>
+                    <td>₹ {{ entry.amount }}</td>
+                    <td>
+                        <a title="Delete" (click)="deleteEntry(entry.id)">
+                            <i class="fa-solid fa-trash text-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr *ngIf="paginatedEntries.length === 0">
+                    <td colspan="7" class="text-center">No Details Found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Pagination -->
+<div class="paginate-div">
+    <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPrev()">
+        <i class="las la-angle-left text-lg"></i>
+    </button>
+    <span class="paginate-text">
+        Page {{ currentPage }} of {{ totalPages }}
+    </span>
+    <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToNext()">
+        <i class="las la-angle-right text-lg"></i>
+    </button>
+</div>
+
+<!-- Add CashIn / Out Modal -->
+<div class="modal fade" id="addEntryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="mb-0">Add {{ newEntry.category }}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Date</label>
+                            <input type="text" class="form-control" name="entryDate" [(ngModel)]="newEntry.date"
+                                readonly />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Time</label>
+                            <input type="text" class="form-control" name="entryTime" [(ngModel)]="newEntry.time"
+                                readonly />
+                        </div>
+                        <div class="mb-3">
+                            <label>{{ newEntry.category }} Amount <span>*</span></label>
+                            <input type="number" class="form-control" min="0" name="entryAmount"
+                                [(ngModel)]="newEntry.amount" placeholder="Enter Amount" required />
+                        </div>
+                        <div class="mb-3">
+                            <label>Vendor</label>
+                            <input type="text" class="form-control" name="entryVendor" [(ngModel)]="newEntry.vendor"
+                                placeholder="Enter Vendor" />
+                        </div>
+                        <div class="mb-3">
+                            <label>Payment Mode</label>
+                            <select class="form-select" name="entryPaymentMode" [(ngModel)]="newEntry.paymentMode">
+                                <option value="UPI">UPI</option>
+                                <option value="NetBanking">NetBanking</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>Category</label>
+                            <input type="text" class="form-control" name="entryCategory" [(ngModel)]="newEntry.category"
+                                placeholder="Enter Category" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="form-btn" type="button" data-bs-dismiss="modal" (click)="addEntry()">
+                        Add {{ newEntry.category }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

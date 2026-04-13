@@ -1,5 +1,5 @@
 .toast-success {
-    background-color: var(--main) !important;
+    background-color: var(--sub) !important;
     color: var(--secondary) !important;
 }
 

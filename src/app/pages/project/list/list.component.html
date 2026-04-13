@@ -1,0 +1,119 @@
+<div class="body-head mb-3">
+    <h4 class="mb-0">Projects List</h4>
+    <button class="list-btn" routerLink="/project-add">
+        <i class="fa-solid fa-plus pe-1"></i> Add Project
+    </button>
+</div>
+
+<div class="list-table">
+    <div class="search-input">
+        <i class="bx bx-search"></i>
+        <input type="text" class="form-control border-0" placeholder="Search ..." [(ngModel)]="searchText"
+            (ngModelChange)="onSearchChange()" />
+    </div>
+
+    <div class="table-wrapper mt-3">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Project Name</th>
+                    <th>Client Name</th>
+                    <th>Email ID</th>
+                    <th>Contact No</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let prjt of paginatedProjects; let i = index">
+                    <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                    <td>{{ prjt.name }}</td>
+                    <td>{{ prjt.clientname }}</td>
+                    <td>{{ prjt.email }}</td>
+                    <td>{{ prjt.contact }}</td>
+                    <td>{{ prjt.address }}</td>
+                    <td>
+                        <div class="d-flex column-gap-2">
+                            <a title="View Project" data-bs-toggle="modal" data-bs-target="#viewProjectModal"
+                                (click)="viewProject(prjt)" style="cursor: pointer;">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <a title="Edit Project" [routerLink]="['/project-edit', prjt.id]">
+                                <i class="fa-solid fa-edit"></i>
+                            </a>
+                            <a title="{{ prjt.isActive ? 'Deactivate' : 'Activate' }}" (click)="toggleActive(prjt)"
+                                style="cursor: pointer;">
+                                <i class="fa-solid "
+                                    [ngClass]="prjt.isActive ? 'fa-circle-xmark text-danger' : 'fa-circle-check text-success'"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="paginatedProjects.length === 0">
+                    <td colspan="7" class="text-center">No Details Found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Pagination -->
+<div class="paginate-div" *ngIf="filteredProjects.length > 0">
+    <button class="pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+        <i class="las la-angle-left text-lg"></i>
+    </button>
+    <span class="paginate-text">
+        Page {{ currentPage }} of {{ totalPages }}
+    </span>
+    <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+        <i class="las la-angle-right text-lg"></i>
+    </button>
+</div>
+
+<!-- View Project Modal -->
+<div class="modal fade" id="viewProjectModal" tabindex="-1" aria-labelledby="viewProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" *ngIf="selectedProject">
+            <div class="modal-header">
+                <h4 class="mb-0">Project Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Project Name</label>
+                        <h6 class="mb-0">{{ selectedProject.name }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Client Name</label>
+                        <h6 class="mb-0">{{ selectedProject.clientname }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Contact No</label>
+                        <h6 class="mb-0">+91 {{ selectedProject.contact }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Address</label>
+                        <h6 class="mb-0">{{ selectedProject.address }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>GST Number</label>
+                        <h6 class="mb-0">{{ selectedProject.gstno || '-' }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Quotation</label>
+                        <h6 class="mb-0">{{ selectedProject.quotation || '-' }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Type</label>
+                        <h6 class="mb-0">{{ selectedProject.type || '-' }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Deadline</label>
+                        <h6 class="mb-0">{{ selectedProject.deadline || '-' }}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

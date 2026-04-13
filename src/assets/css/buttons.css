@@ -2,13 +2,15 @@
 /* Aside Button */
 .aside-btn {
     background-color: transparent;
-    color: var(--text-secondary);
+    color: var(--secondary);
     font-size: 16px;
     padding: 8px 10px;
-    border: 2px solid transparent;
+    border: none;
+    border-left: 5px solid transparent;
     width: 92%;
     font-weight: var(--fw-md);
     border-radius: 5px;
+    letter-spacing: 0.5px;
     display: grid;
     grid-template-columns: 85% 15%;
     justify-content: space-between;
@@ -26,6 +28,27 @@
     border-radius: 5px;
     font-size: 14px;
     padding: 4px 25px;
+}
+
+.reset-btn {
+    background-color: var(--secondary);
+    color: var(--text-primary);
+    font-weight: var(--fw-md);
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 4px 25px;
+}
+
+.list-btn-sm,
+.form-btn-sm {
+    background-color: var(--secondary);
+    color: var(--text-primary);
+    font-weight: var(--fw-md);
+    border: 2px solid var(--main);
+    border-radius: 2px;
+    font-size: 11px;
+    padding: 2px 10px;
 }
 
 /* Back Button */
@@ -67,7 +90,10 @@
 
 /* Box Shadow / Transition */
 .list-btn,
-.form-btn {
+.list-btn-sm,
+.form-btn-sm,
+.form-btn,
+.reset-btn {
     transition: var(--transition);
     box-shadow: var(--box-shadow);
 }
@@ -75,14 +101,24 @@
 /* Button Hover */
 .aside-btn-active,
 .aside-btn:hover {
-    background-color: var(--bg);
-    color: var(--text-primary);
-    border: 2px solid var(--main);
+    background: linear-gradient(135deg, #7B2FF7 -47.79%, rgba(120, 133, 255, 0) 100%);
+    color: var(--secondary);
+    border-left: 5px solid #F107A3;
+    box-shadow: 0px 1px 3px 0px rgba(6, 7, 8, 0.05),
+        0px 1px 2px -1px rgba(6, 7, 8, 0.05),
+        0px 2px 12px 0px rgba(26, 29, 33, 0.4) inset;
 }
 
 .list-btn:hover,
+.list-btn-sm:hover,
+.form-btn-sm:hover,
 .form-btn:hover {
     background-color: var(--main);
+    color: var(--secondary);
+}
+
+.reset-btn:hover {
+    background-color: var(--primary);
     color: var(--secondary);
 }
 

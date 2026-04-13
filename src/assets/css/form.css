@@ -80,9 +80,10 @@ table .form-select,
     background-color: var(--input-bg) !important;
     color: var(--text-primary);
     font-weight: var(--fw-md);
-    border: 1px solid var(--input-border);
+    border: 2px solid var(--input-border);
     font-size: 14px;
     padding: 6px 10px !important;
+    border-radius: 2px !important;
 }
 
 form .form-control:focus,
@@ -102,7 +103,7 @@ table .form-select:focus,
     background-color: var(--secondary) !important;
     outline: none;
     box-shadow: none;
-    border: 1px solid var(--main);
+    border: 2px solid var(--main);
 }
 
 .input-double-flex {
@@ -110,8 +111,8 @@ table .form-select:focus,
     display: grid;
     grid-template-columns: 15% 85%;
     align-items: center;
-    border: 1px solid var(--input-border);
-    border-radius: 5px;
+    border: 2px solid var(--input-border);
+    border-radius: 2px;
 }
 
 .input-repeat-double-flex {
@@ -120,8 +121,8 @@ table .form-select:focus,
     display: grid;
     grid-template-columns: 85% 15%;
     align-items: center;
-    border: 1px solid var(--input-border);
-    border-radius: 5px;
+    border: 2px solid var(--input-border);
+    border-radius: 2px;
 }
 
 .input-triple-flex {
@@ -129,18 +130,18 @@ table .form-select:focus,
     display: grid;
     grid-template-columns: 15% 70% 15%;
     align-items: center;
-    border: 1px solid var(--input-border);
-    border-radius: 5px;
+    border: 2px solid var(--input-border);
+    border-radius: 2px;
 }
 
 .input-double-flex input {
-    border-left: 1px solid var(--input-border) !important;
-    border-radius: 0px 5px 5px 0px !important;
+    border-left: 2px solid var(--input-border) !important;
+    border-radius: 0px 2px 2px 0px !important;
 }
 
 .input-repeat-double-flex input {
-    border-right: 1px solid var(--input-border) !important;
-    border-radius: 5px 0px 0px 5px !important;
+    border-right: 2px solid var(--input-border) !important;
+    border-radius: 2px 0px 0px 2px !important;
 }
 
 .input-triple-flex input {

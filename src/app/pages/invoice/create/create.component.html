@@ -1,0 +1,146 @@
+<div class="back-button-div mb-3">
+    <button (click)="goBack()" class="back-btn">← Back</button>
+</div>
+
+<div class="body-head mb-3">
+    <h4 class="mb-0">Add Invoice</h4>
+</div>
+
+<form>
+    <div class="form-div">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="invoiceId">Invoice ID <span>*</span></label>
+                <input type="text" class="form-control" id="invoiceId" name="invoiceId" readonly>
+            </div>
+            <div class="col-md-8 mb-3">
+                <label for="description">Description <span>*</span></label>
+                <input type="text" class="form-control" id="description" name="description"
+                    placeholder="Enter Description" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="invDate">Invoice Date <span>*</span></label>
+                <input type="date" class="form-control" id="invDate" name="invDate" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="expDate">Expiry Date <span>*</span></label>
+                <input type="date" class="form-control" id="expDate" name="expDate" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-head my-3">
+        <h4 class="mb-0">Customer Details</h4>
+        <div class="d-flex align-items-center column-gap-2">
+            <button class="list-btn" data-bs-toggle="modal" data-bs-target="#customerModal">
+                <i class="fa-solid fa-plus pe-1"></i> Add Customer
+            </button>
+            <button class="list-btn" data-bs-toggle="modal" data-bs-target="#addressModal">
+                <i class="fa-solid fa-plus pe-1"></i> Add Customer Address
+            </button>
+        </div>
+    </div>
+    <div class="form-div">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="customerName">Customer <span>*</span></label>
+                <select class="form-select" name="customerName" id="customerName">
+                    <option value="" selected disabled>Select Customer</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="customerAddress">Address <span>*</span></label>
+                <select class="form-select" name="customerAddress" id="customerAddress">
+                    <option value="" selected disabled>Select Address</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-head my-3">
+        <h4 class="mb-0">Item Details</h4>
+        <div class="d-flex align-items-center column-gap-2">
+            <button class="list-btn" data-bs-toggle="modal" data-bs-target="#itemModal">
+                <i class="fa-solid fa-plus pe-1"></i> Add Item
+            </button>
+            <button class="list-btn">
+                <i class="fa-solid fa-plus pe-1"></i> Add Line Item
+            </button>
+        </div>
+    </div>
+    <div class="list-table">
+        <div class="table-wrapper">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th style="width: 150px;">Item Name</th>
+                        <th style="width: 100px;">HSN Code</th>
+                        <th style="width: 100px;">Amount</th>
+                        <th style="width: 100px;">Total</th>
+                        <th style="width: 50px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <select class="form-select" name="item" id="item"></select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" id="hsnCode" name="hsnCode" readonly>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" id="amount" name="amount" min="0">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" id="total" name="total" readonly>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center column-gap-2">
+                                <a title="Delete Item">
+                                    <i class="fa-solid fa-trash text-danger"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Discount</td>
+                        <td>
+                            <input type="number" class="form-control" id="discount" name="discount" min="0">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>cGST Amount</td>
+                        <td>₹ 0.00</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>sGST Amount</td>
+                        <td>₹ 0.00</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Grand Total</td>
+                        <td>₹ 0.00</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <div class="form-btn-div my-4">
+        <button type="submit" class="reset-btn">Delete Invoice</button>
+        <button type="submit" class="form-btn">Save Invoice</button>
+    </div>
+</form>

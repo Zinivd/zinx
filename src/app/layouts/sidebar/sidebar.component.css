@@ -3,7 +3,7 @@ aside ul::-webkit-scrollbar {
 }
 
 aside {
-    background: var(--secondary);
+    background: var(--sub);
 }
 
 aside .main-ul {
@@ -25,19 +25,39 @@ aside .collapse {
 }
 
 .sidebar ul li a {
-    color: var(--text-secondary);
+    color: var(--secondary);
     font-weight: var(--fw-sm);
     transition: var(--transition);
-    padding-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .aside-link-active,
 .sidebar .collapse li a:hover {
-    color: var(--text-primary);
+    color: var(--main);
 }
 
 .offcanvas {
-    background-color: var(--main) !important;
+    background-color: var(--sub) !important;
+}
+
+.offcanvas-header .user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.offcanvas-header .user img {
+    z-index: 10;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.offcanvas-header .user h6 {
+    margin-left: -10px !important;
+    z-index: 5;
+    background-color: var(--primary);
+    color: var(--secondary);
+    text-transform: capitalize;
 }
 
 @media screen and (min-width:1140px) and (max-width: 1250px) {
@@ -45,7 +65,7 @@ aside .collapse {
     aside .btn-name {
         font-size: 14px !important;
     }
-    
+
     aside .btn-name i {
         font-size: 16px !important;
     }
@@ -86,6 +106,16 @@ aside .collapse {
     }
 
     .sidebar ul li a {
+        font-size: 15px;
+    }
+
+
+    .offcanvas-header .user img {
+        height: 40px;
+        width: 40px;
+    }
+
+    .offcanvas-header .user h6 {
         font-size: 14px;
     }
 
@@ -109,8 +139,25 @@ aside .collapse {
         font-size: 16px !important;
     }
 
-    #navOffcanvas {
+    /* #navOffcanvas {
         width: 95%;
+    } */
+
+    .offcanvas-header .user {
+        display: flex;
+        align-items: center;
+        justify-content: start;
     }
+
+    .offcanvas-header .user img {
+        height: 35px;
+        width: 35px;
+    }
+
+    .offcanvas-header .user h6 {
+        font-size: 10px;
+        padding: 5px 10px 5px 15px !important;
+    }
+
 
 }

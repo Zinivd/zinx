@@ -1,0 +1,42 @@
+<div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="mb-0">Add Address</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="address1">Address Line 1 <span>*</span></label>
+                            <input type="text" class="form-control" id="address1" name="address1"
+                                placeholder="Enter Address Line 1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address2">Address Line 2 <span>*</span></label>
+                            <input type="text" class="form-control" id="address2" name="address2"
+                                placeholder="Enter Address Line 2" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="city">City <span>*</span></label>
+                            <input type="text" class="form-control" id="city" name="city" placeholder="Enter City"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="state">State <span>*</span></label>
+                            <input type="text" class="form-control" id="state" name="state" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pincode">Pincode <span>*</span></label>
+                            <input type="tel" class="form-control" id="pincode" name="pincode" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="form-btn">Add Address</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

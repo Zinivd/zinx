@@ -1,0 +1,43 @@
+<div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="mb-0">Add Customer</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="name">Company/Individual Name <span>*</span></label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                placeholder="Enter Company/Individual Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailID">Email ID <span>*</span></label>
+                            <input type="email" class="form-control" id="emailID" name="emailID"
+                                placeholder="Enter Email ID" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contact">Contact Number <span>*</span></label>
+                            <div class="input-double-flex">
+                                <label class="mb-0 text-center">+ 91</label>
+                                <input type="tel" class="form-control border-0" id="contact" name="contact"
+                                    pattern="[6-9][0-9]{9}" maxlength="10" placeholder="Enter Contact Number"
+                                    (input)="validateContact($event)" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gstno">GST Number <span>*</span></label>
+                            <input type="tel" class="form-control" id="gstno" name="gstno" pattern="[6-9][0-9]{9}"
+                                maxlength="10" placeholder="Enter GST Number" (input)="validateGST($event)" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="form-btn">Add Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
