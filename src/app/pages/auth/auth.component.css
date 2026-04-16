@@ -48,7 +48,6 @@ input[type="number"]::-ms-clear {
 
 form label {
     color: var(--secondary);
-    font-size: 15px;
     font-weight: var(--fw-sm);
     margin-bottom: 5px;
 }
@@ -64,7 +63,6 @@ form .form-control:focus {
     background-color: transparent !important;
     color: var(--secondary);
     border: none;
-    font-size: 18px;
     font-weight: var(--fw-md);
     border-radius: 6px;
 }
@@ -74,25 +72,6 @@ form .inptripleflex:hover,
 form .inpdoubleflex:focus-within,
 form .inptripleflex:focus-within {
     border: 2px solid var(--main);
-}
-
-.login-btn {
-    background-color: var(--main);
-    color: var(--secondary);
-    font-size: 18px;
-    font-weight: var(--fw-lg);
-    border: none;
-    border-radius: 5px;
-    padding: .375rem .75rem;
-    width: 70%;
-    margin: auto;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-}
-
-.login-btn:hover {
-    background-color: #f4154d47;
 }
 
 .inpdoubleflex {
@@ -123,6 +102,24 @@ form .inptripleflex:focus-within {
 
 .inptripleflex i {
     color: var(--secondary);
+}
+
+.login-btn {
+    background-color: var(--main);
+    color: var(--secondary);
+    font-weight: var(--fw-lg);
+    border: none;
+    border-radius: 5px;
+    padding: .375rem .75rem;
+    width: 70%;
+    margin: auto;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #f4154d47;
 }
 
 @media screen and (min-width: 990px) {
