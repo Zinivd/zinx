@@ -12,13 +12,15 @@ import { BookComponent } from './pages/cashbook/book/book.component';
 import { CashComponent } from './pages/cashbook/cash/cash.component';
 import { InvoiceListComponent } from './pages/invoice/list/invoice.component';
 import { InvoiceCreateComponent } from './pages/invoice/create/create.component';
+import { AuthComponent } from './pages/auth/auth.component';
 
 export const routes: Routes = [
+  { path: '', component: AuthComponent },
   {
     path: '',
     component: AdminLayoutComponent,
     children: [
-      { path: '', component: DashboardComponent },
+      // { path: '', component: DashboardComponent },
       // Dashboard
       { path: 'dashboard', component: DashboardComponent },
       // Employee

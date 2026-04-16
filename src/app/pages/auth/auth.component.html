@@ -1,0 +1,39 @@
+<div class="main-body">
+    <div class="signup">
+        <div class="logo d-flex justify-content-center align-items-center">
+            <img src="assets/images/Logo.png" height="60px" alt="">
+        </div>
+
+        <div class="form-div">
+            <h3 class="mb-0 text-center">Login</h3>
+            <form action="">
+                <div class="row">
+                    <div class="col-md-12 mb-4">
+                        <label for="email">Email ID</label>
+                        <div class="inpdoubleflex">
+                            <img src="assets/images/login_user.png" height="20px" class="d-flex mx-auto" alt="">
+                            <input type="email" class="form-control border-0" name="email" id="email" autofocus>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-4">
+                        <label for="password">Password</label>
+                        <div class="inptripleflex">
+                            <img src="assets/images/login_lock.png" height="20px" class="d-flex mx-auto" alt="">
+                            <input [type]="showPassword ? 'text' : 'password'" class="form-control border-0"
+                                name="password" id="password">
+                            <i class="fa-regular mx-auto" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"
+                                (click)="togglePassword()" style="cursor: pointer;"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 d-flex justify-content-center align-items-center mt-3">
+                    <a class="w-100 d-flex mx-auto text-decoration-none">
+                        <button type="button" class="login-btn">Login</button>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>

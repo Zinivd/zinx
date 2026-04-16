@@ -1,0 +1,194 @@
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-ms-clear {
+    display: none;
+}
+
+.main-body {
+    /* background: url('../../../assets/images/login_bg.png') center center no-repeat; */
+    background: radial-gradient(circle at top,
+            rgba(221, 0, 49, 0.35) 0%,
+            rgba(255, 45, 117, 0.25) 25%,
+            rgba(0, 0, 0, 0) 70%),
+        #020617;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    transition: all 1s ease;
+}
+
+.form-div {
+    background: url('../../../assets/images/login_form.png') center center no-repeat;
+    background-size: cover;
+    border-radius: 10px;
+}
+
+.form-div h3 {
+    color: var(--secondary);
+    font-size: 35px;
+    font-weight: var(--fw-xl);
+}
+
+form label {
+    color: var(--secondary);
+    font-size: 15px;
+    font-weight: var(--fw-sm);
+    margin-bottom: 5px;
+}
+
+form .form-control:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+form .form-control,
+form .form-control:focus {
+    background-color: transparent !important;
+    color: var(--secondary);
+    border: none;
+    font-size: 18px;
+    font-weight: var(--fw-md);
+    border-radius: 6px;
+}
+
+form .inpdoubleflex:hover,
+form .inptripleflex:hover,
+form .inpdoubleflex:focus-within,
+form .inptripleflex:focus-within {
+    border: 2px solid var(--main);
+}
+
+.login-btn {
+    background-color: var(--main);
+    color: var(--secondary);
+    font-size: 18px;
+    font-weight: var(--fw-lg);
+    border: none;
+    border-radius: 5px;
+    padding: .375rem .75rem;
+    width: 70%;
+    margin: auto;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #f4154d47;
+}
+
+.inpdoubleflex {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 12% 87%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff14;
+    border: 2px solid #ffffff14;
+    border-radius: 6px;
+}
+
+.inptripleflex {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 12% 75% 12%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff14;
+    border: 2px solid #ffffff14;
+    border-radius: 6px;
+}
+
+.inptripleflex input {
+    border-radius: 6px 0px 0px 6px;
+}
+
+.inptripleflex i {
+    color: var(--secondary);
+}
+
+@media screen and (min-width: 990px) {
+
+    .form-div {
+        width: 70%;
+        margin: 50px auto 0px auto;
+        padding: 30px 30px 75px 30px;
+    }
+
+    .form-div form {
+        margin-top: 50px;
+    }
+
+    .signup {
+        width: 50%;
+    }
+
+    .form-div h3 {
+        font-size: 30px;
+    }
+
+    form label {
+        font-size: 15px;
+    }
+
+    form .form-control,
+    form .form-control:focus {
+        font-size: 18px;
+    }
+
+    .login-btn {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 990px) {
+
+    .form-div {
+        width: 95%;
+        margin: 50px auto 0px auto;
+        padding: 20px 10px;
+    }
+
+    .form-div form {
+        margin-top: 30px;
+    }
+
+    .signup {
+        width: 100%;
+    }
+
+    .form-div h3 {
+        font-size: 25px;
+    }
+
+    form label {
+        font-size: 13px;
+    }
+
+    form .form-control,
+    form .form-control:focus {
+        font-size: 15px;
+    }
+
+    .login-btn {
+        font-size: 15px;
+    }
+}
