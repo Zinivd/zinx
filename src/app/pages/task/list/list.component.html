@@ -8,7 +8,11 @@
 <div class="list-table">
     <div class="search-input">
         <i class="bx bx-search"></i>
-        <input type="text" class="form-control border-0" placeholder="Search ..." [(ngModel)]="searchText"
+        <input
+            type="text"
+            class="form-control border-0"
+            placeholder="Search ..."
+            [(ngModel)]="searchText"
             (ngModelChange)="onSearchChange()" />
     </div>
 
@@ -25,42 +29,64 @@
                     <th>Action</th>
                 </tr>
             </thead>
+
             <tbody>
-                <tr *ngFor="let task of paginatedTasks; let i = index">
+                <tr *ngFor="let task of tasks; let i = index">
                     <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
                     <td>{{ task.name }}</td>
-                    <td>{{ task.project }}</td>
-                    <td>{{ task.startdate }}</td>
-                    <td>{{ task.enddate }}</td>
+                    <td>{{ task.project?.name || '-' }}</td>
+                    <td>{{ task.start_date || '-' }}</td>
+                    <td>{{ task.end_date || '-' }}</td>
                     <td>{{ task.status }}</td>
+
                     <td>
                         <div class="d-flex align-items-center column-gap-2">
-                            <a title="View Task" data-bs-toggle="modal" data-bs-target="#viewTaskModal"
-                                (click)="viewTask(task)" style="cursor: pointer;">
+
+                            <a
+                                title="View Task"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewTaskModal"
+                                (click)="viewTask(task)"
+                                style="cursor: pointer;">
                                 <i class="fa-solid fa-eye"></i>
                             </a>
-                            <a title="Edit Task" [routerLink]="['/task-edit', task.id]">
+
+                            <a
+                                title="Edit Task"
+                                [routerLink]="['/task-edit', task.id]">
                                 <i class="fa-solid fa-edit"></i>
                             </a>
+
+                            <a
+                                title="Delete Task"
+                                (click)="deleteTask(task)"
+                                style="cursor: pointer;">
+                                <i class="fa-solid fa-trash text-danger"></i>
+                            </a>
+
                         </div>
                     </td>
                 </tr>
-                <tr *ngIf="paginatedTasks.length === 0">
+
+                <tr *ngIf="tasks.length === 0">
                     <td colspan="7" class="text-center">No Details Found.</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+
 <!-- Pagination -->
-<div class="paginate-div" *ngIf="filteredTasks.length > 0">
+<div class="paginate-div" *ngIf="tasks.length > 0">
     <button class="pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
         <i class="las la-angle-left text-lg"></i>
     </button>
+
     <span class="paginate-text">
-        Page {{ currentPage }} of {{ totalPages }}
+        Page {{ currentPage }} of {{ lastPage }}
     </span>
-    <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+
+    <button class="pagination-btn" [disabled]="currentPage === lastPage" (click)="nextPage()">
         <i class="las la-angle-right text-lg"></i>
     </button>
 </div>
@@ -69,43 +95,60 @@
 <div class="modal fade" id="viewTaskModal" tabindex="-1" aria-labelledby="viewTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content" *ngIf="selectedTask">
+
             <div class="modal-header">
                 <h4 class="mb-0">Task Details</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
             </div>
+
             <div class="modal-body">
                 <div class="row">
+
                     <div class="col-md-4 mb-3">
                         <label>Task Name</label>
                         <h6 class="mb-0">{{ selectedTask.name }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Project Name</label>
-                        <h6 class="mb-0">{{ selectedTask.project }}</h6>
+                        <h6 class="mb-0">{{ selectedTask.project?.name || '-' }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Assign Employee</label>
-                        <h6 class="mb-0">{{ selectedTask.employees.length === 0 ? '-' : selectedTask.employees[0] }}
+                        <h6 class="mb-0">
+                            {{ selectedTask.employees.length ? selectedTask.employees[0].name : '-' }}
                         </h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Start Date</label>
-                        <h6 class="mb-0">{{ selectedTask.startdate }}</h6>
+                        <h6 class="mb-0">{{ selectedTask.start_date || '-' }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>End Date</label>
-                        <h6 class="mb-0">{{ selectedTask.enddate }}</h6>
+                        <h6 class="mb-0">{{ selectedTask.end_date || '-' }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Status</label>
                         <h6 class="mb-0">{{ selectedTask.status }}</h6>
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label>Description</label>
-                        <h6 class="mb-0">{{ selectedTask.description }}</h6>
+                        <h6 class="mb-0">{{ selectedTask.description || '-' }}</h6>
                     </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>

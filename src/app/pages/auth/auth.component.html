@@ -6,34 +6,50 @@
 
         <div class="form-div">
             <h3 class="mb-0 text-center">Login</h3>
-            <form action="">
+
+            <!-- Bind form to TS logic -->
+            <form (ngSubmit)="onLogin()">
                 <div class="row">
+
+                    <!-- Email -->
                     <div class="col-md-12 mb-4">
                         <label for="email">Email ID</label>
                         <div class="inpdoubleflex">
                             <img src="assets/images/login_user.png" height="20px" class="d-flex mx-auto" alt="">
-                            <input type="email" class="form-control border-0" name="email" id="email" autofocus>
+                            <input type="email" class="form-control border-0" name="email" id="email" autofocus
+                                [(ngModel)]="credentials.email" required>
                         </div>
                     </div>
+
+                    <!-- Password -->
                     <div class="col-md-12 mb-4">
                         <label for="password">Password</label>
                         <div class="inptripleflex">
                             <img src="assets/images/login_lock.png" height="20px" class="d-flex mx-auto" alt="">
+
                             <input [type]="showPassword ? 'text' : 'password'" class="form-control border-0"
-                                name="password" id="password">
+                                name="password" id="password" [(ngModel)]="credentials.password" required>
+
                             <i class="fa-regular mx-auto" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"
-                                (click)="togglePassword()" style="cursor: pointer;"></i>
+                                (click)="togglePassword()" style="cursor: pointer;">
+                            </i>
                         </div>
                     </div>
+
                 </div>
+
+                <!-- Login Button -->
                 <div class="col-sm-12 d-flex justify-content-center align-items-center mt-3">
                     <a class="w-100 d-flex mx-auto text-decoration-none">
-                        <button type="button" class="login-btn">Login</button>
+                        <button type="submit" class="login-btn" [disabled]="isLoading">
+
+                            {{ isLoading ? 'Logging in...' : 'Login' }}
+
+                        </button>
                     </a>
                 </div>
+
             </form>
         </div>
-
     </div>
-
 </div>

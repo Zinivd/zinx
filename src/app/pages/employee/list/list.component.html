@@ -1,5 +1,6 @@
 <div class="body-head mb-3">
     <h4 class="mb-0">Employees List</h4>
+
     <button class="list-btn" routerLink="/employee-add">
         <i class="fa-solid fa-plus pe-1"></i> Add Employee
     </button>
@@ -8,7 +9,11 @@
 <div class="list-table">
     <div class="search-input">
         <i class="bx bx-search"></i>
-        <input type="text" class="form-control border-0" placeholder="Search ..." [(ngModel)]="searchText"
+        <input
+            type="text"
+            class="form-control border-0"
+            placeholder="Search ..."
+            [(ngModel)]="searchText"
             (ngModelChange)="onSearchChange()" />
     </div>
 
@@ -25,33 +30,57 @@
                     <th>Action</th>
                 </tr>
             </thead>
+
             <tbody>
-                <tr *ngFor="let emp of paginatedEmployees; let i = index">
+                <tr *ngFor="let emp of employees; let i = index">
                     <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
                     <td>{{ emp.name }}</td>
                     <td>{{ emp.designation }}</td>
                     <td>{{ emp.email }}</td>
                     <td>{{ emp.contact }}</td>
                     <td>{{ emp.address }}</td>
+
                     <td>
                         <div class="d-flex column-gap-2">
-                            <a title="View Employee" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal"
-                                (click)="viewEmployee(emp)" style="cursor: pointer;">
+
+                            <a
+                                title="View Employee"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewEmployeeModal"
+                                (click)="viewEmployee(emp)"
+                                style="cursor: pointer;">
                                 <i class="fa-solid fa-eye"></i>
                             </a>
-                            <a title="Edit Employee" [routerLink]="['/employee-edit', emp.id]">
+
+                            <a
+                                title="Edit Employee"
+                                [routerLink]="['/employee-edit', emp.id]">
                                 <i class="fa-solid fa-edit"></i>
                             </a>
-                            <a title="{{ emp.isActive ? 'Deactivate' : 'Activate' }}" (click)="toggleActive(emp)"
+
+                            <a
+                                title="{{ emp.is_active ? 'Deactivate' : 'Activate' }}"
+                                (click)="toggleActive(emp)"
                                 style="cursor: pointer;">
-                                <i class="fa-solid "
-                                    [ngClass]="emp.isActive ? 'fa-circle-xmark text-danger' : 'fa-circle-check text-success'"></i>
+
+                                <i
+                                    class="fa-solid"
+                                    [ngClass]="emp.is_active ? 'fa-circle-xmark text-danger' : 'fa-circle-check text-success'">
+                                </i>
                             </a>
+
+                            <a
+                                title="Delete Employee"
+                                (click)="deleteEmployee(emp)"
+                                style="cursor: pointer;">
+                                <i class="fa-solid fa-trash text-danger"></i>
+                            </a>
+
                         </div>
                     </td>
                 </tr>
 
-                <tr *ngIf="paginatedEmployees.length === 0">
+                <tr *ngIf="employees.length === 0">
                     <td colspan="7" class="text-center">No Details Found.</td>
                 </tr>
             </tbody>
@@ -60,69 +89,102 @@
 </div>
 
 <!-- Pagination -->
-<div class="paginate-div" *ngIf="filteredEmployees.length > 0">
-    <button class="pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+<div class="paginate-div" *ngIf="employees.length > 0">
+    <button
+        class="pagination-btn"
+        [disabled]="currentPage === 1"
+        (click)="prevPage()">
         <i class="las la-angle-left text-lg"></i>
     </button>
+
     <span class="paginate-text">
-        Page {{ currentPage }} of {{ totalPages }}
-        <!-- {{ filteredEmployees.length }} -->
+        Page {{ currentPage }} of {{ lastPage }}
     </span>
-    <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+
+    <button
+        class="pagination-btn"
+        [disabled]="currentPage === lastPage"
+        (click)="nextPage()">
         <i class="las la-angle-right text-lg"></i>
     </button>
 </div>
 
 <!-- View Employee Modal -->
-<div class="modal fade" id="viewEmployeeModal" tabindex="-1" aria-labelledby="viewEmployeeModalLabel"
+<div
+    class="modal fade"
+    id="viewEmployeeModal"
+    tabindex="-1"
+    aria-labelledby="viewEmployeeModalLabel"
     aria-hidden="true">
+
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content" *ngIf="selectedEmployee">
+
             <div class="modal-header">
                 <h4 class="mb-0">Employee Details</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
             </div>
+
             <div class="modal-body">
                 <div class="row">
+
                     <div class="col-md-4 mb-3">
                         <label>Name</label>
                         <h6 class="mb-0">{{ selectedEmployee.name }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Designation</label>
                         <h6 class="mb-0">{{ selectedEmployee.designation }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Email ID</label>
                         <h6 class="mb-0">{{ selectedEmployee.email }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Contact No</label>
                         <h6 class="mb-0">{{ selectedEmployee.contact }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Address</label>
                         <h6 class="mb-0">{{ selectedEmployee.address }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Pay Type</label>
-                        <h6 class="mb-0">{{ selectedEmployee.payType || '-' }}</h6>
+                        <h6 class="mb-0">{{ selectedEmployee.pay_type || '-' }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Salary</label>
                         <h6 class="mb-0">{{ selectedEmployee.salary || '-' }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Aadhar Card No</label>
-                        <h6 class="mb-0">{{ selectedEmployee.aadharCard || '-' }}</h6>
+                        <h6 class="mb-0">{{ selectedEmployee.aadhar_card || '-' }}</h6>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label>Profile Image</label>
-                        <img [src]="selectedEmployee.profileImage || 'assets/images/Avatar.png'" alt="Profile Image"
-                            height="100px" class="d-block rounded-2" />
+                        <img
+                            [src]="selectedEmployee.profile_image || 'assets/images/Avatar.png'"
+                            alt="Profile Image"
+                            height="100px"
+                            class="d-block rounded-2" />
                     </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>

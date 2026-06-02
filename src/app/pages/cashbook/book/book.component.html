@@ -12,22 +12,25 @@
             <h5 class="mb-0">₹ {{ totalAmount }}</h5>
         </div>
     </div>
+
     <div class="col-md-3 mb-3">
         <div class="book-card">
             <h6 class="mb-3">Total Cash In</h6>
             <h5 class="mb-0">₹ {{ totalCashIn }}</h5>
         </div>
     </div>
+
     <div class="col-md-3 mb-3">
         <div class="book-card">
             <h6 class="mb-3">Total Cash Out</h6>
             <h5 class="mb-0">₹ {{ totalCashOut }}</h5>
         </div>
     </div>
+
     <div class="col-md-3 mb-3">
         <div class="book-card">
             <h6 class="mb-3">Total Transactions</h6>
-            <h5 class="mb-0">₹ {{ totalTransactions }}</h5>
+            <h5 class="mb-0">{{ totalTransactions }}</h5>
         </div>
     </div>
 </div>
@@ -35,7 +38,11 @@
 <div class="list-table">
     <div class="search-input">
         <i class="bx bx-search"></i>
-        <input type="text" class="form-control border-0" placeholder="Search ..." [(ngModel)]="searchQuery"
+        <input
+            type="text"
+            class="form-control border-0"
+            placeholder="Search ..."
+            [(ngModel)]="searchQuery"
             (ngModelChange)="onSearchChange()" />
     </div>
 
@@ -52,19 +59,21 @@
                     <th>Action</th>
                 </tr>
             </thead>
+
             <tbody>
-                <tr *ngFor="let book of paginatedBooks; let i = index">
+                <tr *ngFor="let book of allBooks; let i = index">
                     <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
                     <td>{{ book.name }}</td>
-                    <td>{{ book.date }}</td>
-                    <td>{{ book.cashIn }}</td>
-                    <td>{{ book.cashOut }}</td>
-                    <td>{{ book.balance }}</td>
+                    <td>{{ book.created_at | date:'dd-MM-yyyy' }}</td>
+                    <td>{{ book.cash_in || 0 }}</td>
+                    <td>{{ book.cash_out || 0 }}</td>
+                    <td>{{ book.balance || 0 }}</td>
                     <td>
                         <div class="d-flex align-items-center column-gap-2">
-                            <a title="View Book" [routerLink]="['/finance-cash-list']">
+                            <a title="View Book" (click)="openBook(book.id)">
                                 <i class="fa-solid fa-eye"></i>
                             </a>
+
                             <a title="Delete" (click)="deleteBook(book.id)">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>
@@ -72,7 +81,7 @@
                     </td>
                 </tr>
 
-                <tr *ngIf="paginatedBooks.length === 0">
+                <tr *ngIf="allBooks.length === 0">
                     <td colspan="7" class="text-center">No Details Found.</td>
                 </tr>
             </tbody>
@@ -82,13 +91,21 @@
 
 <!-- Pagination -->
 <div class="paginate-div">
-    <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPrev()">
+    <button
+        class="pagination-btn"
+        [disabled]="currentPage === 1"
+        (click)="goToPrev()">
         <i class="las la-angle-left"></i>
     </button>
+
     <span class="paginate-text">
-        Page {{ currentPage }} of {{ totalPages }}
+        Page {{ currentPage }} of {{ lastPage }}
     </span>
-    <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToNext()">
+
+    <button
+        class="pagination-btn"
+        [disabled]="currentPage === lastPage"
+        (click)="goToNext()">
         <i class="las la-angle-right"></i>
     </button>
 </div>
@@ -101,22 +118,38 @@
                 <h4 class="mb-0">Add Book</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form>
+
+            <form (ngSubmit)="addBook()">
                 <div class="modal-body">
                     <div class="row">
+
                         <div class="mb-3">
                             <label for="bookName">Book Name <span>*</span></label>
-                            <input type="text" class="form-control" id="bookName" name="bookName"
-                                placeholder="Enter Book Name" required>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="bookName"
+                                name="bookName"
+                                placeholder="Enter Book Name"
+                                [(ngModel)]="newBook.name"
+                                required>
                         </div>
+
                         <div class="mb-3">
                             <label for="description">Description <span>*</span></label>
-                            <input type="text" class="form-control" id="description" name="description">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="description"
+                                name="description"
+                                [(ngModel)]="newBook.description">
                         </div>
+
                     </div>
                 </div>
+
                 <div class="modal-footer">
-                    <button class="form-btn" type="button" (click)="addBook()">Add Book</button>
+                    <button class="form-btn" type="submit">Add Book</button>
                 </div>
             </form>
         </div>

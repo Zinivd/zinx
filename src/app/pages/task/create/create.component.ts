@@ -1,13 +1,13 @@
+
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { Location, CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-export interface Employee {
-  id: number;
-  name: string;
-}
+import { TaskService } from '../../../core/services/task.service';
+import { EmployeeService } from '../../../core/services/employee.service';
+import { ProjectService } from '../../../core/services/project.service';
+import { EmployeeDropdown, ProjectDropdown } from '../../../models/index';
 
 @Component({
   selector: 'app-create',
@@ -16,151 +16,124 @@ export interface Employee {
   styleUrls: ['./create.component.css'],
 })
 export class TaskCreateComponent implements OnInit {
-  isEditMode: boolean = false;
-  taskId: any;
+  isEditMode   = false;
+  taskId: number | null = null;
+  isSubmitting = false;
 
   task: any = {
-    name: '',
-    project: '',
-    employees: [] as number[],
-    startdate: '',
-    enddate: '',
-    status: '',
-    description: '',
+    name: '', project_id: '', employees: [] as number[],
+    start_date: '', end_date: '', status: 'Opened', description: '',
   };
 
-  // Employee list
-  employeeList: Employee[] = [
-    { id: 1, name: 'Sheik' },
-    { id: 2, name: 'Ravi Kumar' },
-    { id: 3, name: 'Priya' },
-    { id: 4, name: 'Arjun' },
-    { id: 5, name: 'Meena' },
-  ];
+  employeeList: EmployeeDropdown[] = [];
+  projectList:  ProjectDropdown[]  = [];
 
-  // Dropdown state
-  dropdownOpen: boolean = false;
-  employeeSearch: string = '';
+  dropdownOpen    = false;
+  employeeSearch  = '';
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private toastr: ToastrService,
     private location: Location,
     private elRef: ElementRef,
+    private taskService: TaskService,
+    private employeeService: EmployeeService,
+    private projectService: ProjectService,
   ) {}
 
   ngOnInit(): void {
-    this.taskId = this.route.snapshot.paramMap.get('id');
-    if (this.taskId) {
-      this.isEditMode = true;
-      this.getTaskById(this.taskId);
-    }
+    this.loadDropdowns();
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) { this.isEditMode = true; this.taskId = +id; this.loadTask(+id); }
   }
 
-  // Close dropdown when clicking outside
+  loadDropdowns(): void {
+    this.employeeService.getAllForDropdown().subscribe({
+      next: (res) => { if (res.status) this.employeeList = res.data ?? []; },
+    });
+    this.projectService.getAllForDropdown().subscribe({
+      next: (res) => { if (res.status) this.projectList = res.data ?? []; },
+    });
+  }
+
+  loadTask(id: number): void {
+    this.taskService.getById(id).subscribe({
+      next: (res) => {
+        if (res.status && res.data) {
+          const t = res.data;
+          this.task = {
+            name: t.name, project_id: t.project_id,
+            employees: t.employee_ids, start_date: t.start_date ?? '',
+            end_date: t.end_date ?? '', status: t.status, description: t.description ?? '',
+          };
+        }
+      },
+      error: () => { this.toastr.error('Failed to load task'); this.router.navigate(['/task-list']); },
+    });
+  }
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    if (!this.elRef.nativeElement.contains(event.target)) {
-      this.dropdownOpen = false;
-    }
+    if (!this.elRef.nativeElement.contains(event.target)) this.dropdownOpen = false;
   }
 
-  // Employee Dropdown
-  get filteredEmployees(): Employee[] {
+  get filteredEmployees(): EmployeeDropdown[] {
     const term = this.employeeSearch.toLowerCase();
-    return this.employeeList.filter((e) => e.name.toLowerCase().includes(term));
+    return this.employeeList.filter(e => e.name.toLowerCase().includes(term));
   }
 
   get selectedEmployeeLabel(): string {
-    if (this.task.employees.length === 0) return 'Select Employees';
+    if (!this.task.employees.length) return 'Select Employees';
     if (this.task.employees.length === 1) {
-      const emp = this.employeeList.find((e) => e.id === this.task.employees[0]);
-      return emp ? emp.name : 'Select Employees';
+      return this.employeeList.find(e => e.id === this.task.employees[0])?.name ?? 'Select Employees';
     }
     return `${this.task.employees.length} Employees Selected`;
   }
 
-  toggleDropdown(): void {
-    this.dropdownOpen = !this.dropdownOpen;
-    if (this.dropdownOpen) {
-      this.employeeSearch = '';
-    }
-  }
-
-  isSelected(id: number): boolean {
-    return this.task.employees.includes(id);
-  }
-
+  toggleDropdown(): void { this.dropdownOpen = !this.dropdownOpen; if (this.dropdownOpen) this.employeeSearch = ''; }
+  isSelected(id: number): boolean { return this.task.employees.includes(id); }
   toggleEmployee(id: number): void {
-    const index = this.task.employees.indexOf(id);
-    if (index === -1) {
-      this.task.employees = [...this.task.employees, id];
-    } else {
-      this.task.employees = this.task.employees.filter((e: number) => e !== id);
-    }
+    const idx = this.task.employees.indexOf(id);
+    this.task.employees = idx === -1 ? [...this.task.employees, id] : this.task.employees.filter((e: number) => e !== id);
   }
-
-  get allSelected(): boolean {
-    return (
-      this.filteredEmployees.length > 0 &&
-      this.filteredEmployees.every((e) => this.isSelected(e.id))
-    );
-  }
-
-  get someSelected(): boolean {
-    return this.filteredEmployees.some((e) => this.isSelected(e.id)) && !this.allSelected;
-  }
-
+  get allSelected(): boolean { return this.filteredEmployees.length > 0 && this.filteredEmployees.every(e => this.isSelected(e.id)); }
   toggleSelectAll(): void {
     if (this.allSelected) {
-      // Deselect only the visible filtered ones
-      const filteredIds = this.filteredEmployees.map((e) => e.id);
-      this.task.employees = this.task.employees.filter((id: number) => !filteredIds.includes(id));
+      const ids = this.filteredEmployees.map(e => e.id);
+      this.task.employees = this.task.employees.filter((id: number) => !ids.includes(id));
     } else {
-      // Add all filtered ones not already selected
-      const toAdd = this.filteredEmployees.filter((e) => !this.isSelected(e.id)).map((e) => e.id);
+      const toAdd = this.filteredEmployees.filter(e => !this.isSelected(e.id)).map(e => e.id);
       this.task.employees = [...this.task.employees, ...toAdd];
     }
   }
+  removeEmployee(id: number, e: MouseEvent): void { e.stopPropagation(); this.task.employees = this.task.employees.filter((x: number) => x !== id); }
+  getEmployeeName(id: number): string { return this.employeeList.find(e => e.id === id)?.name ?? ''; }
 
-  removeEmployee(id: number, event: MouseEvent): void {
-    event.stopPropagation();
-    this.task.employees = this.task.employees.filter((e: number) => e !== id);
+  onSubmit(): void {
+    if (!this.task.employees.length) { this.toastr.error('Please select at least one employee.'); return; }
+    this.isSubmitting = true;
+
+    const action = this.isEditMode
+      ? this.taskService.update(this.taskId!, this.task)
+      : this.taskService.create(this.task);
+
+    action.subscribe({
+      next: (res) => {
+        this.isSubmitting = false;
+        if (res.status) {
+          this.toastr.success(this.isEditMode ? 'Task updated!' : 'Task created!');
+          this.router.navigate(['/task-list']);
+        }
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        const errors = err?.error?.errors;
+        if (errors) Object.values(errors).forEach((m: any) => this.toastr.error(m[0]));
+        else this.toastr.error(err?.error?.message || 'Something went wrong');
+      },
+    });
   }
 
-  getEmployeeName(id: number): string {
-    return this.employeeList.find((e) => e.id === id)?.name ?? '';
-  }
-
-  // CRUD
-  getTaskById(id: any) {
-    const data = {
-      name: 'Front End Developing',
-      project: '2',
-      employees: [1, 3],
-      startdate: '2021-01-01',
-      enddate: '2021-02-02',
-      status: 'Opened',
-      description: 'Nil',
-    };
-    this.task = data;
-  }
-
-  onSubmit() {
-    if (this.task.employees.length === 0) {
-      this.toastr.error('Please select at least one employee.');
-      return;
-    }
-    if (this.isEditMode) {
-      console.log('Update Task', this.task);
-      this.toastr.success('Task updated successfully!');
-    } else {
-      console.log('Add Task', this.task);
-      this.toastr.success('Task added successfully!');
-    }
-  }
-
-  goBack(): void {
-    this.location.back();
-  }
+  goBack(): void { this.location.back(); }
 }

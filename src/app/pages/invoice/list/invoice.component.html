@@ -1,5 +1,6 @@
 <div class="body-head mb-3">
     <h4 class="mb-0">Invoice List</h4>
+
     <button class="list-btn" routerLink="/finance-invoice-add">
         <i class="fa-solid fa-plus pe-1"></i> Add Invoice
     </button>
@@ -8,7 +9,11 @@
 <div class="list-table">
     <div class="search-input">
         <i class="bx bx-search"></i>
-        <input type="text" class="form-control border-0" placeholder="Search ..." [(ngModel)]="searchQuery"
+        <input
+            type="text"
+            class="form-control border-0"
+            placeholder="Search ..."
+            [(ngModel)]="searchQuery"
             (ngModelChange)="onSearchChange()" />
     </div>
 
@@ -26,36 +31,57 @@
                     <th>Action</th>
                 </tr>
             </thead>
+
             <tbody>
-                <tr *ngFor="let inv of paginatedInvoices; let i = index">
+                <tr *ngFor="let inv of allInvoices; let i = index">
                     <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-                    <td>{{ inv.invoiceId }}</td>
-                    <td>{{ inv.date }}</td>
-                    <td>₹ {{ inv.amount }}</td>
-                    <td>{{ inv.receiptNo }}</td>
-                    <td>{{ inv.customer }}</td>
+
+                    <td>{{ inv.invoice_id }}</td>
+
+                    <td>{{ inv.invoice_date | date:'dd-MM-yyyy' }}</td>
+
+                    <td>₹ {{ inv.total_amount }}</td>
+
+                    <td>{{ inv.receipt_no }}</td>
+
+                    <td>{{ inv.customer_name }}</td>
+
                     <td>
-                        <span [ngClass]="{
-                            'text-success': inv.status === 'Paid',
-                            'text-warning': inv.status === 'Pending',
-                            'text-danger':  inv.status === 'Cancelled'
-                        }">{{ inv.status }}</span>
+                        <span
+                            [ngClass]="{
+                                'text-success': inv.status === 'Paid',
+                                'text-warning': inv.status === 'Pending',
+                                'text-danger': inv.status === 'Cancelled'
+                            }">
+                            {{ inv.status }}
+                        </span>
                     </td>
+
                     <td>
                         <div class="d-flex align-items-center column-gap-2">
-                            <a title="View Invoice" routerLink="/finance-invoice-view">
+
+                            <a
+                                title="View Invoice"
+                                (click)="viewInvoice(inv)"
+                                routerLink="/finance-invoice-view">
                                 <i class="fa-solid fa-eye"></i>
                             </a>
+
                             <a title="Download Invoice">
                                 <i class="fa-solid fa-download"></i>
                             </a>
-                            <a title="Delete" (click)="deleteInvoice(inv.id)">
+
+                            <a
+                                title="Delete"
+                                (click)="deleteInvoice(inv.id)">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>
+
                         </div>
                     </td>
                 </tr>
-                <tr *ngIf="paginatedInvoices.length === 0">
+
+                <tr *ngIf="allInvoices.length === 0">
                     <td colspan="8" class="text-center">No Details Found.</td>
                 </tr>
             </tbody>
@@ -65,13 +91,21 @@
 
 <!-- Pagination -->
 <div class="paginate-div">
-    <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPrev()">
+    <button
+        class="pagination-btn"
+        [disabled]="currentPage === 1"
+        (click)="goToPrev()">
         <i class="las la-angle-left text-lg"></i>
     </button>
+
     <span class="paginate-text">
-        Page {{ currentPage }} of {{ totalPages }}
+        Page {{ currentPage }} of {{ lastPage }}
     </span>
-    <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToNext()">
+
+    <button
+        class="pagination-btn"
+        [disabled]="currentPage === lastPage"
+        (click)="goToNext()">
         <i class="las la-angle-right text-lg"></i>
     </button>
 </div>

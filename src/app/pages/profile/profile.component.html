@@ -6,51 +6,105 @@
     <h4 class="mb-0">Update Profile</h4>
 </div>
 
-<form>
+<form (ngSubmit)="onUpdateProfile()">
     <div class="form-div">
         <div class="row">
+
             <div class="col-md-4 mb-3">
                 <label for="name">Name <span>*</span></label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" required>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    placeholder="Enter Name"
+                    [(ngModel)]="profile.name"
+                    required>
             </div>
+
             <div class="col-md-4 mb-3">
                 <label for="designation">Designation <span>*</span></label>
-                <input type="text" class="form-control" id="designation" name="designation"
-                    placeholder="Enter Designation" readonly>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="designation"
+                    name="designation"
+                    placeholder="Enter Designation"
+                    [(ngModel)]="profile.designation"
+                    readonly>
             </div>
+
             <div class="col-md-4 mb-3">
                 <label for="email">Email ID <span>*</span></label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" readonly>
+                <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="Enter Email"
+                    [(ngModel)]="profile.email"
+                    readonly>
             </div>
+
             <div class="col-md-4 mb-3">
                 <label for="contact">Contact Number <span>*</span></label>
                 <div class="input-double-flex">
                     <label class="mb-0 text-center">+ 91</label>
-                    <input type="tel" class="form-control border-0" id="contact" name="contact" pattern="[6-9][0-9]{9}"
-                        maxlength="10" placeholder="Enter Contact Number" (input)="validateContact($event)" required>
+                    <input
+                        type="tel"
+                        class="form-control border-0"
+                        id="contact"
+                        name="contact"
+                        pattern="[6-9][0-9]{9}"
+                        maxlength="10"
+                        placeholder="Enter Contact Number"
+                        [(ngModel)]="profile.phone"
+                        (input)="validateContact($event)"
+                        required>
                 </div>
             </div>
+
             <div class="col-md-4 mb-3">
                 <label for="address">Address <span>*</span></label>
-                <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address"
+                <input
+                    type="text"
+                    class="form-control"
+                    id="address"
+                    name="address"
+                    placeholder="Enter Address"
+                    [(ngModel)]="profile.address"
                     required>
             </div>
-            <div class="col-md-4 mb-3">
-                <label for="aadharImg">Aadhar Card Image <span>*</span></label>
-                <input type="file" class="form-control" id="aadharImg" name="aadharImg" accept="image/*" required>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label for="aadharNo">Aadhar Card No <span>*</span></label>
-                <input type="tel" class="form-control" placeholder="Enter Aadhaar Number" maxlength="14"
-                    (input)="validateAadhar($event)" name="aadharNo" required>
-            </div>
+
             <div class="col-md-4 mb-3">
                 <label for="profileImg">Profile Image</label>
-                <input type="file" class="form-control" id="profileImg" name="profileImg" accept="image/*">
+                <input
+                    type="file"
+                    class="form-control"
+                    id="profileImg"
+                    name="profileImg"
+                    accept="image/*"
+                    (change)="onFileChange($event)">
             </div>
+
+            <div class="col-md-12 mb-3" *ngIf="previewImage">
+                <img
+                    [src]="previewImage"
+                    alt="Profile Preview"
+                    style="max-width: 120px; border-radius: 8px;">
+            </div>
+
         </div>
     </div>
+
     <div class="form-btn-div mt-4">
-        <button type="submit" class="form-btn">Update Details</button>
+        <button
+            type="submit"
+            class="form-btn"
+            [disabled]="isSubmitting">
+
+            {{ isSubmitting ? 'Updating...' : 'Update Details' }}
+
+        </button>
     </div>
 </form>

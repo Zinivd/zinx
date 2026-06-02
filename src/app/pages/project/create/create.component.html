@@ -9,16 +9,25 @@
 <form (ngSubmit)="onSubmit()">
     <div class="form-div">
         <div class="row">
+
             <div class="col-md-4 mb-3">
                 <label for="projectname">Project Name <span>*</span></label>
                 <input type="text" class="form-control" id="projectname" name="projectname" [(ngModel)]="project.name"
                     placeholder="Enter Project Name" required>
             </div>
+
             <div class="col-md-4 mb-3">
                 <label for="clientname">Client Name <span>*</span></label>
                 <input type="text" class="form-control" id="clientname" name="clientname"
-                    [(ngModel)]="project.clientname" placeholder="Enter Client Name" required>
+                    [(ngModel)]="project.client_name" placeholder="Enter Client Name" required>
             </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="email">Email ID</label>
+                <input type="email" class="form-control" id="email" name="email" [(ngModel)]="project.email"
+                    placeholder="Enter Email">
+            </div>
+
             <div class="col-md-4 mb-3">
                 <label for="contact">Contact Number <span>*</span></label>
                 <div class="input-double-flex">
@@ -28,38 +37,49 @@
                         (input)="validateContact($event)" required>
                 </div>
             </div>
+
             <div class="col-md-4 mb-3">
                 <label for="address">Address <span>*</span></label>
                 <input type="text" class="form-control" id="address" name="address" [(ngModel)]="project.address"
                     placeholder="Enter Address" required>
             </div>
+
             <div class="col-md-4 mb-3">
                 <label for="gstno">GST Number <span>*</span></label>
-                <input type="text" class="form-control text-uppercase" id="contact" name="gstno" maxlength="15"
-                    [(ngModel)]="project.gstno" placeholder="Enter GST Number" (input)="validateGST($event)" required>
+                <input type="text" class="form-control text-uppercase" id="gstno" name="gstno" maxlength="15"
+                    [(ngModel)]="project.gst_no" placeholder="Enter GST Number" (input)="validateGST($event)" required>
             </div>
+
             <div class="col-md-4 mb-3">
                 <label for="quotation">Quotation <span>*</span></label>
                 <input type="number" class="form-control" id="quotation" name="quotation" min="0"
                     [(ngModel)]="project.quotation" placeholder="Enter Quotation" required>
             </div>
+
             <div class="col-md-4 mb-3">
                 <label for="type">Type <span>*</span></label>
                 <select class="form-select" id="type" name="type" [(ngModel)]="project.type" required>
-                    <option value="" selected disabled>Select Type</option>
+                    <option value="" disabled>Select Type</option>
                     <option value="Fixed">Fixed</option>
                     <option value="Percentage">Percentage</option>
                     <option value="Time and Materials">Time and Materials</option>
                 </select>
             </div>
+
             <div class="col-md-4 mb-3">
                 <label for="deadline">Deadline <span>*</span></label>
                 <input type="date" class="form-control" id="deadline" name="deadline" [(ngModel)]="project.deadline"
                     required>
             </div>
+
         </div>
     </div>
+
     <div class="form-btn-div mt-4">
-        <button type="submit" class="form-btn">{{ isEditMode ? 'Update Project' : 'Add Project' }}</button>
+        <button type="submit" class="form-btn" [disabled]="isSubmitting">
+
+            {{ isSubmitting ? 'Please Wait...' : (isEditMode ? 'Update Project' : 'Add Project') }}
+
+        </button>
     </div>
 </form>

@@ -4,11 +4,21 @@
 
 <div class="body-head mb-3">
     <h4 class="mb-0">Cash List</h4>
+
     <div class="d-flex align-items-center column-gap-2">
-        <button class="list-btn" data-bs-toggle="modal" data-bs-target="#addEntryModal" (click)="openModal('Cash In')">
+        <button
+            class="list-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#addEntryModal"
+            (click)="openModal('Cash In')">
             <i class="fa-solid fa-plus pe-1"></i> Add Cash In
         </button>
-        <button class="list-btn" data-bs-toggle="modal" data-bs-target="#addEntryModal" (click)="openModal('Cash Out')">
+
+        <button
+            class="list-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#addEntryModal"
+            (click)="openModal('Cash Out')">
             <i class="fa-solid fa-plus pe-1"></i> Add Cash Out
         </button>
     </div>
@@ -26,7 +36,11 @@
 <div class="list-table">
     <div class="search-input">
         <i class="bx bx-search"></i>
-        <input type="text" class="form-control border-0" placeholder="Search ..." [(ngModel)]="searchQuery"
+        <input
+            type="text"
+            class="form-control border-0"
+            placeholder="Search ..."
+            [(ngModel)]="searchQuery"
             (ngModelChange)="onSearchChange()" />
     </div>
 
@@ -43,12 +57,13 @@
                     <th>Action</th>
                 </tr>
             </thead>
+
             <tbody>
-                <tr *ngFor="let entry of paginatedEntries; let i = index">
+                <tr *ngFor="let entry of allEntries; let i = index">
                     <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
                     <td>{{ entry.date }} / {{ entry.time }}</td>
                     <td>{{ entry.vendor }}</td>
-                    <td>{{ entry.paymentMode }}</td>
+                    <td>{{ entry.payment_mode }}</td>
                     <td>{{ entry.category }}</td>
                     <td>₹ {{ entry.amount }}</td>
                     <td>
@@ -57,7 +72,8 @@
                         </a>
                     </td>
                 </tr>
-                <tr *ngIf="paginatedEntries.length === 0">
+
+                <tr *ngIf="allEntries.length === 0">
                     <td colspan="7" class="text-center">No Details Found.</td>
                 </tr>
             </tbody>
@@ -67,13 +83,21 @@
 
 <!-- Pagination -->
 <div class="paginate-div">
-    <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPrev()">
+    <button
+        class="pagination-btn"
+        [disabled]="currentPage === 1"
+        (click)="goToPrev()">
         <i class="las la-angle-left text-lg"></i>
     </button>
+
     <span class="paginate-text">
-        Page {{ currentPage }} of {{ totalPages }}
+        Page {{ currentPage }} of {{ lastPage }}
     </span>
-    <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToNext()">
+
+    <button
+        class="pagination-btn"
+        [disabled]="currentPage === lastPage"
+        (click)="goToNext()">
         <i class="las la-angle-right text-lg"></i>
     </button>
 </div>
@@ -82,53 +106,110 @@
 <div class="modal fade" id="addEntryModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
+
             <div class="modal-header">
                 <h4 class="mb-0">Add {{ newEntry.category }}</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
             </div>
-            <form>
+
+            <form (ngSubmit)="addEntry()">
                 <div class="modal-body">
                     <div class="row">
+
                         <div class="col-md-6 mb-3">
                             <label>Date</label>
-                            <input type="text" class="form-control" name="entryDate" [(ngModel)]="newEntry.date"
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="entryDate"
+                                [(ngModel)]="newEntry.date"
                                 readonly />
                         </div>
+
                         <div class="col-md-6 mb-3">
                             <label>Time</label>
-                            <input type="text" class="form-control" name="entryTime" [(ngModel)]="newEntry.time"
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="entryTime"
+                                [(ngModel)]="newEntry.time"
                                 readonly />
                         </div>
+
                         <div class="mb-3">
                             <label>{{ newEntry.category }} Amount <span>*</span></label>
-                            <input type="number" class="form-control" min="0" name="entryAmount"
-                                [(ngModel)]="newEntry.amount" placeholder="Enter Amount" required />
+                            <input
+                                type="number"
+                                class="form-control"
+                                min="0"
+                                name="entryAmount"
+                                [(ngModel)]="newEntry.amount"
+                                placeholder="Enter Amount"
+                                required />
                         </div>
+
                         <div class="mb-3">
                             <label>Vendor</label>
-                            <input type="text" class="form-control" name="entryVendor" [(ngModel)]="newEntry.vendor"
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="entryVendor"
+                                [(ngModel)]="newEntry.vendor"
                                 placeholder="Enter Vendor" />
                         </div>
+
                         <div class="mb-3">
                             <label>Payment Mode</label>
-                            <select class="form-select" name="entryPaymentMode" [(ngModel)]="newEntry.paymentMode">
+                            <select
+                                class="form-select"
+                                name="entryPaymentMode"
+                                [(ngModel)]="newEntry.payment_mode">
+
                                 <option value="UPI">UPI</option>
                                 <option value="NetBanking">NetBanking</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Cheque">Cheque</option>
                             </select>
                         </div>
+
                         <div class="mb-3">
                             <label>Category</label>
-                            <input type="text" class="form-control" name="entryCategory" [(ngModel)]="newEntry.category"
-                                placeholder="Enter Category" />
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="entryCategory"
+                                [(ngModel)]="newEntry.category"
+                                readonly />
                         </div>
+
+                        <div class="mb-3">
+                            <label>Note</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="entryNote"
+                                [(ngModel)]="newEntry.note"
+                                placeholder="Enter Note" />
+                        </div>
+
                     </div>
                 </div>
+
                 <div class="modal-footer">
-                    <button class="form-btn" type="button" data-bs-dismiss="modal" (click)="addEntry()">
+                    <button
+                        class="form-btn"
+                        type="submit"
+                        data-bs-dismiss="modal">
                         Add {{ newEntry.category }}
                     </button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

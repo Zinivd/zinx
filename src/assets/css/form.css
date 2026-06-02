@@ -83,7 +83,7 @@ table .form-select,
     border: 2px solid var(--input-border);
     font-size: 14px;
     padding: 6px 10px !important;
-    border-radius: 2px !important;
+    border-radius: 7px !important;
 }
 
 form .form-control:focus,

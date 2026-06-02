@@ -1,17 +1,15 @@
+// =============================================================
+// src/app/pages/cashbook/book/book.component.ts  — UPDATED
+// =============================================================
+
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-
-interface Book {
-  id: number;
-  name: string;
-  date: string;
-  cashIn: number;
-  cashOut: number;
-  balance: number;
-}
+import { Router } from '@angular/router';
+import { CashBookService } from '../../../core/services/cashbook.service';
+import { CashBook } from '../../../models';
 
 @Component({
   selector: 'app-book',
@@ -20,94 +18,75 @@ interface Book {
   styleUrls: ['./book.component.css'],
 })
 export class BookComponent implements OnInit {
-  allBooks: Book[] = [
-    { id: 1, name: 'Personal', date: '2021-01-01', cashIn: 1000, cashOut: 500, balance: 500 },
-    { id: 2, name: 'Business', date: '2021-02-15', cashIn: 5000, cashOut: 2000, balance: 3000 },
-    { id: 3, name: 'Savings', date: '2021-03-10', cashIn: 2000, cashOut: 200, balance: 1800 },
-    { id: 4, name: 'Travel', date: '2021-04-05', cashIn: 800, cashOut: 750, balance: 50 },
-    { id: 5, name: 'Education', date: '2021-05-20', cashIn: 3000, cashOut: 1500, balance: 1500 },
-    { id: 6, name: 'Grocery', date: '2021-06-01', cashIn: 600, cashOut: 580, balance: 20 },
-  ];
+  allBooks: CashBook[] = [];
+  isLoading = false;
 
-  // Search
-  searchQuery: string = '';
+  searchQuery  = '';
+  currentPage  = 1;
+  pageSize     = 5;
+  totalItems   = 0;
+  lastPage     = 1;
 
-  // Pagination
-  currentPage: number = 1;
-  pageSize: number = 5;
+  // Totals from meta
+  totalCashIn  = 0;
+  totalCashOut = 0;
+  totalAmount  = 0;
 
-  // Add Book Modal
-  newBook = { bookname: '', description: '' };
+  newBook = { name: '', description: '' };
 
-  constructor(private toastr: ToastrService) {}
+  constructor(
+    private cashBookService: CashBookService,
+    private toastr: ToastrService,
+    private router: Router,
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void { this.loadBooks(); }
 
-  // Filtering
-  get filteredBooks(): Book[] {
-    const q = this.searchQuery.trim().toLowerCase();
-    if (!q) return this.allBooks;
-    return this.allBooks.filter((b) => b.name.toLowerCase().includes(q) || b.date.includes(q));
+  loadBooks(): void {
+    this.isLoading = true;
+    this.cashBookService.getAll({ search: this.searchQuery || undefined, page: this.currentPage, per_page: this.pageSize }).subscribe({
+      next: (res) => {
+        this.isLoading   = false;
+        this.allBooks    = res.data;
+        this.totalItems  = res.meta.total;
+        this.lastPage    = res.meta.last_page;
+        this.totalCashIn  = res.meta.total_cash_in  ?? 0;
+        this.totalCashOut = res.meta.total_cash_out ?? 0;
+        this.totalAmount  = res.meta.total_balance  ?? 0;
+      },
+      error: () => { this.isLoading = false; this.toastr.error('Failed to load cash books'); },
+    });
   }
 
-  get paginatedBooks(): Book[] {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.filteredBooks.slice(start, start + this.pageSize);
-  }
+  get totalTransactions(): number { return this.totalItems; }
 
-  get totalPages(): number {
-    return Math.ceil(this.filteredBooks.length / this.pageSize) || 1;
-  }
-
-  get totalAmount(): number {
-    return this.allBooks.reduce((s, b) => s + b.balance, 0);
-  }
-  get totalCashIn(): number {
-    return this.allBooks.reduce((s, b) => s + b.cashIn, 0);
-  }
-  get totalCashOut(): number {
-    return this.allBooks.reduce((s, b) => s + b.cashOut, 0);
-  }
-  get totalTransactions(): number {
-    return this.allBooks.length;
-  }
-
-  // Search
-  onSearchChange(): void {
-    this.currentPage = 1;
-  }
-
-  goToPrev(): void {
-    if (this.currentPage > 1) this.currentPage--;
-  }
-
-  goToNext(): void {
-    if (this.currentPage < this.totalPages) this.currentPage++;
-  }
+  onSearchChange(): void { this.currentPage = 1; this.loadBooks(); }
+  goToPrev(): void { if (this.currentPage > 1) { this.currentPage--; this.loadBooks(); } }
+  goToNext(): void { if (this.currentPage < this.lastPage) { this.currentPage++; this.loadBooks(); } }
 
   deleteBook(id: number): void {
-    this.allBooks = this.allBooks.filter((b) => b.id !== id);
-    if (this.currentPage > this.totalPages) {
-      this.currentPage = this.totalPages;
-    }
-    this.toastr.success('Book deleted successfully');
+    if (!confirm('Delete this cash book? All entries will also be deleted.')) return;
+    this.cashBookService.delete(id).subscribe({
+      next: () => { this.toastr.success('Cash book deleted'); this.loadBooks(); },
+      error: () => this.toastr.error('Failed to delete cash book'),
+    });
   }
 
   addBook(): void {
-    if (!this.newBook.bookname.trim()) {
-      this.toastr.error('Book name is required');
-      return;
-    }
-    const newId = Math.max(...this.allBooks.map((b) => b.id), 0) + 1;
-    this.allBooks.push({
-      id: newId,
-      name: this.newBook.bookname,
-      date: new Date().toISOString().split('T')[0],
-      cashIn: 0,
-      cashOut: 0,
-      balance: 0,
+    if (!this.newBook.name.trim()) { this.toastr.error('Book name is required'); return; }
+    this.cashBookService.create(this.newBook).subscribe({
+      next: (res) => {
+        if (res.status) {
+          this.toastr.success('Cash book created');
+          this.newBook = { name: '', description: '' };
+          this.loadBooks();
+        }
+      },
+      error: (err) => this.toastr.error(err?.error?.message || 'Failed to create book'),
     });
-    this.newBook = { bookname: '', description: '' };
-    this.toastr.success('Book added successfully');
+  }
+
+  openBook(bookId: number): void {
+    this.router.navigate(['/finance-cash-list'], { queryParams: { book_id: bookId } });
   }
 }

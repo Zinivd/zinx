@@ -1,8 +1,10 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ProjectService } from '../../../core/services/project.service';
 
 @Component({
   selector: 'app-create',
@@ -11,87 +13,74 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./create.component.css'],
 })
 export class ProjectCreateComponent implements OnInit {
-  isEditMode: boolean = false;
-  projectId: any;
+  isEditMode   = false;
+  projectId: number | null = null;
+  isSubmitting = false;
 
   project: any = {
-    name: '',
-    clientname: '',
-    contact: '',
-    address: '',
-    gstno: '',
-    quotation: '',
-    type: '',
-    deadline: '',
+    name: '', client_name: '', email: '', contact: '',
+    address: '', gst_no: '', quotation: '', type: '', deadline: '',
   };
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private toastr: ToastrService,
     private location: Location,
+    private projectService: ProjectService,
   ) {}
 
   ngOnInit(): void {
-    this.projectId = this.route.snapshot.paramMap.get('id');
-
-    if (this.projectId) {
-      this.isEditMode = true;
-      this.getProjectById(this.projectId);
-    }
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) { this.isEditMode = true; this.projectId = +id; this.loadProject(+id); }
   }
 
-  getProjectById(id: any) {
-    // Mock data
-    const data = {
-      name: 'ECommerce',
-      clientname: 'Sheik',
-      contact: '9876543210',
-      address: 'Salem',
-      gstno: '1234567890',
-      quotation: 100000,
-      type: 'Fixed',
-      deadline: '2021-01-01',
-    };
-
-    this.project = data;
+  loadProject(id: number): void {
+    this.projectService.getById(id).subscribe({
+      next: (res) => {
+        if (res.status && res.data) {
+          const p = res.data;
+          this.project = {
+            name: p.name, client_name: p.client_name, email: p.email ?? '',
+            contact: p.contact ?? '', address: p.address ?? '',
+            gst_no: p.gst_no ?? '', quotation: p.quotation,
+            type: p.type, deadline: p.deadline ?? '',
+          };
+        }
+      },
+      error: () => { this.toastr.error('Failed to load project'); this.router.navigate(['/project-list']); },
+    });
   }
 
-  onSubmit() {
-    if (this.isEditMode) {
-      // Update API
-      console.log('Update Project');
-    } else {
-      // Create API
-      console.log('Add Project');
-    }
+  onSubmit(): void {
+    this.isSubmitting = true;
+    const action = this.isEditMode
+      ? this.projectService.update(this.projectId!, this.project)
+      : this.projectService.create(this.project);
+
+    action.subscribe({
+      next: (res) => {
+        this.isSubmitting = false;
+        if (res.status) {
+          this.toastr.success(this.isEditMode ? 'Project updated!' : 'Project created!');
+          this.router.navigate(['/project-list']);
+        }
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        const errors = err?.error?.errors;
+        if (errors) Object.values(errors).forEach((m: any) => this.toastr.error(m[0]));
+        else this.toastr.error(err?.error?.message || 'Something went wrong');
+      },
+    });
   }
 
-  validateContact(event: any): void {
-    const input = event.target as HTMLInputElement;
-    input.value = input.value.replace(/[^0-9]/g, '');
-    if (input.value.length > 10) {
-      input.value = input.value.slice(0, 10);
-    }
+  validateContact(e: any): void {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+  }
+  validateGST(e: any): void {
+    e.target.value = e.target.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 15);
   }
 
-  validateGST(event: any): void {
-    const input = event.target as HTMLInputElement;
-    input.value = input.value.replace(/[^a-zA-Z0-9]/g, '');
-    input.value = input.value.toUpperCase();
-    if (input.value.length > 15) {
-      input.value = input.value.slice(0, 15);
-    }
-  }
-
-  validateAadhar(event: any): void {
-    const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, '');
-    value = value.substring(0, 12);
-    const formatted = value.replace(/(\d{4})(?=\d)/g, '$1 ');
-    input.value = formatted;
-  }
-
-  goBack(): void {
-    this.location.back();
-  }
+  goBack(): void { this.location.back(); }
 }

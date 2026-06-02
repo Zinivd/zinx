@@ -1,22 +1,11 @@
+
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-
-export interface Project {
-  id: number;
-  name: string;
-  clientname: string;
-  email: string;
-  contact: string;
-  address: string;
-  gstno?: string;
-  quotation?: number;
-  type?: string;
-  deadline?: string;
-  isActive: boolean;
-}
+import { ProjectService } from '../../../core/services/project.service';
+import { Project } from '../../../models';
 
 @Component({
   selector: 'app-list',
@@ -25,93 +14,73 @@ export interface Project {
   styleUrls: ['./list.component.css'],
 })
 export class PorjectListComponent implements OnInit {
-  projects: Project[] = [
-    {
-      id: 1,
-      name: 'ECommerce',
-      clientname: 'Naveen',
-      email: 'naveen@gmail.com',
-      contact: '+91 9876543210',
-      address: 'Harur',
-      gstno: '1234567890',
-      quotation: 100000,
-      type: 'Fixed',
-      deadline: '2021-01-01',
-      isActive: true,
-    },
-  ];
-
-  // Search
-  searchText: string = '';
-
-  // Pagination
-  currentPage: number = 1;
-  itemsPerPage: number = 10;
-
-  // Selected employee for view modal
+  projects: Project[]             = [];
   selectedProject: Project | null = null;
+  isLoading = false;
 
-  constructor(private toastr: ToastrService) {}
+  searchText   = '';
+  currentPage  = 1;
+  itemsPerPage = 10;
+  totalItems   = 0;
+  lastPage     = 1;
 
-  ngOnInit(): void {}
+  constructor(
+    private projectService: ProjectService,
+    private toastr: ToastrService,
+  ) {}
 
-  // Search
-  get filteredProjects(): Project[] {
-    if (!this.searchText.trim()) {
-      return this.projects;
-    }
-    const term = this.searchText.toLowerCase();
-    return this.projects.filter(
-      (prjt) =>
-        prjt.name.toLowerCase().includes(term) ||
-        prjt.clientname.toLowerCase().includes(term) ||
-        prjt.email.toLowerCase().includes(term) ||
-        prjt.contact.toLowerCase().includes(term) ||
-        prjt.address.toLowerCase().includes(term),
-    );
+  ngOnInit(): void { this.loadProjects(); }
+
+  loadProjects(): void {
+    this.isLoading = true;
+    this.projectService.getAll({
+      search:   this.searchText || undefined,
+      page:     this.currentPage,
+      per_page: this.itemsPerPage,
+    }).subscribe({
+      next: (res) => {
+        this.isLoading  = false;
+        this.projects   = res.data;
+        this.totalItems = res.meta.total;
+        this.lastPage   = res.meta.last_page;
+      },
+      error: () => {
+        this.isLoading = false;
+        this.toastr.error('Failed to load projects');
+      },
+    });
   }
 
-  onSearchChange(): void {
-    this.currentPage = 1; // reset to first page on new search
-  }
-
-  // Pagination
-  get totalPages(): number {
-    return Math.ceil(this.filteredProjects.length / this.itemsPerPage) || 1;
-  }
-
-  get paginatedProjects(): Project[] {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredProjects.slice(start, start + this.itemsPerPage);
-  }
-
-  get pageNumbers(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
+  onSearchChange(): void { this.currentPage = 1; this.loadProjects(); }
 
   goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
+    if (page >= 1 && page <= this.lastPage) {
       this.currentPage = page;
+      this.loadProjects();
     }
   }
+  prevPage(): void { this.goToPage(this.currentPage - 1); }
+  nextPage(): void { this.goToPage(this.currentPage + 1); }
+  get pageNumbers(): number[] { return Array.from({ length: this.lastPage }, (_, i) => i + 1); }
 
-  prevPage(): void {
-    this.goToPage(this.currentPage - 1);
+  viewProject(p: Project): void { this.selectedProject = p; }
+
+  toggleActive(p: Project): void {
+    this.projectService.toggleStatus(p.id).subscribe({
+      next: (res) => {
+        p.is_active    = res.data!.is_active;
+        const status   = p.is_active ? 'activated' : 'deactivated';
+        this.toastr.success(`Project ${p.name} has been ${status}.`);
+      },
+      error: () => this.toastr.error('Failed to update status'),
+    });
   }
 
-  nextPage(): void {
-    this.goToPage(this.currentPage + 1);
-  }
-
-  // Modal
-  viewProject(project: Project): void {
-    this.selectedProject = project;
-  }
-
-  // Toggle Active
-  toggleActive(project: Project): void {
-    project.isActive = !project.isActive;
-    const status = project.isActive ? 'activated' : 'deactivated';
-    this.toastr.success(`Project ${project.name} has been ${status}.`);
+  deleteProject(p: Project): void {
+    if (!confirm(`Delete project "${p.name}"?`)) return;
+    this.projectService.delete(p.id).subscribe({
+      next: () => { this.toastr.success('Project deleted'); this.loadProjects(); },
+      error: () => this.toastr.error('Failed to delete project'),
+    });
   }
 }

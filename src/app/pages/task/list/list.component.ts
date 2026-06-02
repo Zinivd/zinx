@@ -1,20 +1,11 @@
+
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-
-export interface Task {
-  id: number;
-  name: string;
-  project: string;
-  employees: number[];
-  startdate: string;
-  enddate: string;
-  status: string;
-  description: string;
-  isActive: boolean;
-}
+import { TaskService } from '../../../core/services/task.service';
+import { Task } from '../../../models';
 
 @Component({
   selector: 'app-list',
@@ -22,95 +13,56 @@ export interface Task {
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
 })
-
 export class TaskListComponent implements OnInit {
-  tasks: Task[] = [
-    {
-      id: 1,
-      name: 'UI/UX Designing',
-      project: 'Alpha',
-      employees: [1, 2, 3],
-      startdate: '2021-01-01',
-      enddate: '2021-02-02',
-      status: 'Opened',
-      description: 'Nil',
-      isActive: true,
-    },
-  ];
-
-  // Search
-  searchText: string = '';
-
-  // Pagination
-  currentPage: number = 1;
-  itemsPerPage: number = 10;
-
-  // Selected employee for view modal
+  tasks: Task[]           = [];
   selectedTask: Task | null = null;
+  isLoading = false;
 
-  constructor(private toastr: ToastrService) {}
+  searchText   = '';
+  currentPage  = 1;
+  itemsPerPage = 10;
+  totalItems   = 0;
+  lastPage     = 1;
 
-  ngOnInit(): void {}
+  constructor(
+    private taskService: TaskService,
+    private toastr: ToastrService,
+  ) {}
 
-  // Search
-  get filteredTasks(): Task[] {
-    if (!this.searchText.trim()) {
-      return this.tasks;
-    }
-    const term = this.searchText.toLowerCase();
-    return this.tasks.filter(
-      (task) =>
-        task.name.toLowerCase().includes(term) ||
-        task.project.toLowerCase().includes(term) ||
-        task.employees.toString().includes(term) ||
-        task.startdate.toLowerCase().includes(term) ||
-        task.enddate.toLowerCase().includes(term) ||
-        task.status.toLowerCase().includes(term) ||
-        task.description.toLowerCase().includes(term),
-    );
+  ngOnInit(): void { this.loadTasks(); }
+
+  loadTasks(): void {
+    this.isLoading = true;
+    this.taskService.getAll({
+      search:   this.searchText || undefined,
+      page:     this.currentPage,
+      per_page: this.itemsPerPage,
+    }).subscribe({
+      next: (res) => {
+        this.isLoading  = false;
+        this.tasks      = res.data;
+        this.totalItems = res.meta.total;
+        this.lastPage   = res.meta.last_page;
+      },
+      error: () => { this.isLoading = false; this.toastr.error('Failed to load tasks'); },
+    });
   }
 
-  onSearchChange(): void {
-    this.currentPage = 1; // reset to first page on new search
-  }
-
-  // Pagination
-  get totalPages(): number {
-    return Math.ceil(this.filteredTasks.length / this.itemsPerPage) || 1;
-  }
-
-  get paginatedTasks(): Task[] {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredTasks.slice(start, start + this.itemsPerPage);
-  }
-
-  get pageNumbers(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
+  onSearchChange(): void { this.currentPage = 1; this.loadTasks(); }
   goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
+    if (page >= 1 && page <= this.lastPage) { this.currentPage = page; this.loadTasks(); }
   }
+  prevPage(): void { this.goToPage(this.currentPage - 1); }
+  nextPage(): void { this.goToPage(this.currentPage + 1); }
+  get pageNumbers(): number[] { return Array.from({ length: this.lastPage }, (_, i) => i + 1); }
 
-  prevPage(): void {
-    this.goToPage(this.currentPage - 1);
-  }
+  viewTask(t: Task): void { this.selectedTask = t; }
 
-  nextPage(): void {
-    this.goToPage(this.currentPage + 1);
-  }
-
-  // Modal
-  viewTask(task: Task): void {
-    this.selectedTask = task;
-  }
-
-  // Toggle Active
-  toggleActive(task: Task): void {
-    task.isActive = !task.isActive;
-    const status = task.isActive ? 'opened' : 'closed';
-    this.toastr.success(`Task ${task.name} has been ${status}.`);
+  deleteTask(t: Task): void {
+    if (!confirm(`Delete task "${t.name}"?`)) return;
+    this.taskService.delete(t.id).subscribe({
+      next: () => { this.toastr.success('Task deleted'); this.loadTasks(); },
+      error: () => this.toastr.error('Failed to delete task'),
+    });
   }
 }
